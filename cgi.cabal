@@ -12,7 +12,7 @@ Synopsis: A library for writing CGI programs
 Description:
  This is a Haskell library for writing CGI programs.
 Build-Type: Simple
-Cabal-Version: >=1.2
+Cabal-Version: >=1.6
 
 source-repository head
   type: git
