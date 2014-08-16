@@ -1,18 +1,22 @@
 Name: cgi
 Version: 3001.1.8.5
-Copyright: Bjorn Bringert, Andy Gill, Anders Kaseorg, Ian Lynagh, 
+Copyright: Bjorn Bringert, Andy Gill, Anders Kaseorg, Ian Lynagh,
            Erik Meijer, Sven Panne, Jeremy Shaw
 Category: Network
-Maintainer: Anders Kaseorg <andersk@mit.edu>
+Maintainer: John Chee <cheecheeo@gmail.com>
 Author: Bjorn Bringert
-Homepage: http://andersk.mit.edu/haskell/cgi/
+Homepage: https://github.com/cheecheeo/haskell-cgi
 License: BSD3
 License-file: LICENSE
 Synopsis: A library for writing CGI programs
 Description:
- This is a Haskell library for writing CGI programs. 
+ This is a Haskell library for writing CGI programs.
 Build-Type: Simple
 Cabal-Version: >=1.2
+
+source-repository head
+  type: git
+  location: git://github.com/cheecheeo/stats.git
 
 Flag split-base
 Flag bytestring-in-base
