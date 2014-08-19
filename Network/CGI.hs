@@ -28,7 +28,7 @@
 -- A new, hopefully more flexible, interface
 -- and support for file uploads by Bjorn Bringert <mailto:bjorn@bringert.net>.
 --
--- Here is a simple example, including error handling (not that there is 
+-- Here is a simple example, including error handling (not that there is
 -- much that can go wrong with Hello World):
 --
 -- > import Network.CGI
@@ -56,7 +56,7 @@ module Network.CGI (
   , output, outputFPS, outputNothing, redirect
   , setHeader, setStatus
   -- * Error pages
-  , outputError, outputException 
+  , outputError, outputException
   , outputNotFound, outputMethodNotAllowed, outputInternalServerError
   -- * Input
   , getInput, getInputFPS, readInput
@@ -101,13 +101,13 @@ import Control.Exception.Extensible
 #endif
   (Exception(..), SomeException, ErrorCall(..))
 import Control.Monad (liftM)
-import Control.Monad.CatchIO (MonadCatchIO)
+import Control.Monad.Catch (MonadCatch)
 import Control.Monad.Trans (MonadIO, liftIO)
 import Data.Char (toUpper)
 import Data.List (intersperse, sort, group)
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as Map
-import Network.URI (URI(..), URIAuth(..), nullURI, parseRelativeReference, 
+import Network.URI (URI(..), URIAuth(..), nullURI, parseRelativeReference,
                     escapeURIString, isUnescapedInURI)
 import System.IO (stdin, stdout)
 
@@ -122,7 +122,7 @@ import Network.CGI.Monad
 import Network.CGI.Protocol
 import Network.CGI.Compat
 
-import Text.XHtml (renderHtml, header, (<<), thetitle, (+++), 
+import Text.XHtml (renderHtml, header, (<<), thetitle, (+++),
                    body, h1, paragraph, hr, address)
 
 
@@ -146,8 +146,8 @@ output :: MonadCGI m =>
        -> m CGIResult
 output = return . CGIOutput . BS.pack
 
--- | Output a 'ByteString'. The output is assumed to be text\/html, 
---   encoded using ISO-8859-1. To change this, set the 
+-- | Output a 'ByteString'. The output is assumed to be text\/html,
+--   encoded using ISO-8859-1. To change this, set the
 --   Content-type header using 'setHeader'.
 outputFPS :: MonadCGI m =>
              ByteString        -- ^ The string to output.
@@ -172,7 +172,7 @@ redirect url = do setHeader "Location" url
 -- | Catches any exception thrown by the given CGI action,
 --   returns an error page with a 500 Internal Server Error,
 --   showing the exception information, and logs the error.
---   
+--
 --   Typical usage:
 --
 -- > cgiMain :: CGI CGIResult
@@ -180,7 +180,7 @@ redirect url = do setHeader "Location" url
 -- >
 -- > main :: IO ()
 -- > main = runCGI (handleErrors cgiMain)
-handleErrors :: (MonadCGI m, MonadCatchIO m) => m CGIResult -> m CGIResult
+handleErrors :: (MonadCGI m, MonadCatch m, MonadIO m) => m CGIResult -> m CGIResult
 handleErrors = flip catchCGI outputException
 
 --
@@ -203,40 +203,40 @@ outputError :: (MonadCGI m, MonadIO m) =>
             -> String   -- ^ Status message
             -> [String] -- ^ Error information
             -> m CGIResult
-outputError c m es = 
+outputError c m es =
       do logCGI $ show (c,m,es)
          setStatus c m
          let textType = ContentType "text" "plain" [("charset","ISO-8859-1")]
              htmlType = ContentType "text" "html"  [("charset","ISO-8859-1")]
          cts <- liftM (negotiate [htmlType,textType]) requestAccept
          case cts of
-           ct:_ | ct == textType -> 
+           ct:_ | ct == textType ->
                 do setHeader "Content-type" (showContentType textType)
                    text <- errorText c m es
                    output text
            _ -> do setHeader "Content-type" (showContentType htmlType)
-                   page <- errorPage c m es 
+                   page <- errorPage c m es
                    output $ renderHtml page
 
 -- | Create an HTML error page.
-errorPage :: MonadCGI m => 
+errorPage :: MonadCGI m =>
              Int      -- ^ Status code
           -> String   -- ^ Status message
           -> [String] -- ^ Error information
           -> m Html
-errorPage c m es = 
+errorPage c m es =
     do server <- getVar "SERVER_SOFTWARE"
        host   <- getVar "SERVER_NAME"
        port   <- getVar "SERVER_PORT"
        let tit = show c ++ " " ++ m
-           sig = "Haskell CGI" 
+           sig = "Haskell CGI"
                  ++ " on " ++ fromMaybe "" server
                  ++ " at " ++ fromMaybe "" host ++ maybe "" (", port "++) port
-       return $ header << thetitle << tit 
-                  +++ body << (h1 << tit +++ map (paragraph <<) es 
+       return $ header << thetitle << tit
+                  +++ body << (h1 << tit +++ map (paragraph <<) es
                                +++ hr +++ address << sig)
 
-errorText :: MonadCGI m => 
+errorText :: MonadCGI m =>
              Int      -- ^ Status code
           -> String   -- ^ Status message
           -> [String] -- ^ Error information
@@ -248,17 +248,17 @@ errorText c m es = return $ unlines $ (show c ++ " " ++ m) : es
 --
 
 -- | Use 'outputError' to output and log a 404 Not Found error.
-outputNotFound :: (MonadIO m, MonadCGI m) => 
+outputNotFound :: (MonadIO m, MonadCGI m) =>
                  String -- ^ The name of the requested resource.
               -> m CGIResult
 outputNotFound r =
     outputError 404 "Not Found" ["The requested resource was not found: " ++ r]
 
 -- | Use 'outputError' to output and log a 405 Method Not Allowed error.
-outputMethodNotAllowed :: (MonadIO m, MonadCGI m) => 
+outputMethodNotAllowed :: (MonadIO m, MonadCGI m) =>
                           [String] -- ^ The allowed methods.
                        -> m CGIResult
-outputMethodNotAllowed ms = 
+outputMethodNotAllowed ms =
     do let allow = concat $ intersperse ", " ms
        setHeader "Allow" allow
        outputError 405 "Method Not Allowed" ["Allowed methods : " ++ allow]
@@ -284,7 +284,7 @@ getVar name = liftM (Map.lookup name) $ cgiGet cgiVars
 
 getVarWithDefault :: MonadCGI m =>
                      String -- ^ The name of the variable.
-                  -> String -- ^ Default value 
+                  -> String -- ^ Default value
                   -> m String
 getVarWithDefault name def = liftM (fromMaybe def) $ getVar name
 
@@ -297,7 +297,7 @@ getVars = liftM Map.toList $ cgiGet cgiVars
 -- * Request information
 --
 
--- | The server\'s hostname, DNS alias, or IP address as it would 
+-- | The server\'s hostname, DNS alias, or IP address as it would
 --   appear in self-referencing URLs.
 serverName :: MonadCGI m => m String
 serverName = getVarWithDefault "SERVER_NAME" ""
@@ -306,7 +306,7 @@ serverName = getVarWithDefault "SERVER_NAME" ""
 serverPort :: MonadCGI m => m Int
 serverPort = liftM (fromMaybe 80 . (>>= maybeRead)) (getVar "SERVER_PORT")
 
--- |  The method with which the request was made. 
+-- |  The method with which the request was made.
 --    For HTTP, this is \"GET\", \"HEAD\", \"POST\", etc.
 requestMethod :: MonadCGI m => m String
 requestMethod = getVarWithDefault "REQUEST_METHOD" "GET"
@@ -332,8 +332,8 @@ pathInfo = liftM slash $ getVarWithDefault "PATH_INFO" ""
 pathTranslated :: MonadCGI m => m String
 pathTranslated = getVarWithDefault "PATH_TRANSLATED" ""
 
--- | A virtual path to the script being executed,  
--- used for self-referencing URIs. 
+-- | A virtual path to the script being executed,
+-- used for self-referencing URIs.
 --
 -- Note that this function returns an unencoded string.
 -- Make sure to percent-encode any characters
@@ -344,7 +344,7 @@ pathTranslated = getVarWithDefault "PATH_TRANSLATED" ""
 scriptName :: MonadCGI m => m String
 scriptName = getVarWithDefault "SCRIPT_NAME" ""
 
--- | The information which follows the ? in the URL which referenced 
+-- | The information which follows the ? in the URL which referenced
 --   this program. This is the percent-encoded query information.
 --   For most normal uses, 'getInput' and friends are probably
 --   more convenient.
@@ -360,26 +360,26 @@ remoteHost = getVar "REMOTE_HOST"
 remoteAddr :: MonadCGI m => m String
 remoteAddr = getVarWithDefault "REMOTE_ADDR" ""
 
--- | If the server supports user authentication, and the script is 
--- protected, this is the protocol-specific authentication method 
+-- | If the server supports user authentication, and the script is
+-- protected, this is the protocol-specific authentication method
 -- used to validate the user.
 authType :: MonadCGI m => m (Maybe String)
 authType = getVar "AUTH_TYPE"
 
--- | If the server supports user authentication, and the script is 
+-- | If the server supports user authentication, and the script is
 --   protected, this is the username they have authenticated as.
 remoteUser :: MonadCGI m => m (Maybe String)
 remoteUser = getVar "REMOTE_USER"
 
--- | For queries which have attached information, such as 
+-- | For queries which have attached information, such as
 --   HTTP POST and PUT, this is the content type of the data.
 --   You can use 'parseContentType' to get a structured
 --   representation of the the content-type value.
 requestContentType :: MonadCGI m => m (Maybe String)
 requestContentType = getVar "CONTENT_TYPE"
 
--- | For queries which have attached information, such as 
---   HTTP POST and PUT, this is the length of the content 
+-- | For queries which have attached information, such as
+--   HTTP POST and PUT, this is the length of the content
 --   given by the client.
 requestContentLength :: MonadCGI m => m (Maybe Int)
 requestContentLength = liftM (>>= maybeRead) $ getVar "CONTENT_LENGTH"
@@ -416,7 +416,7 @@ requestAcceptLanguage = requestHeaderValue "Accept-Language"
 -- * Program and request URI
 --
 
--- | Attempts to reconstruct the absolute URI of this program. 
+-- | Attempts to reconstruct the absolute URI of this program.
 --   This does not include
 --   any extra path information or query parameters. See
 --   'queryURI' for that.
@@ -424,7 +424,7 @@ requestAcceptLanguage = requestHeaderValue "Accept-Language"
 --   be different from the one requested by the client.
 --   See also 'requestURI'.
 --
--- Characters in the components of the returned URI are escaped 
+-- Characters in the components of the returned URI are escaped
 -- when needed, as required by "Network.URI".
 progURI :: MonadCGI m => m URI
 progURI =
@@ -437,19 +437,19 @@ progURI =
        -- if the server listens on multiple ports, so we give priority
        -- to the port in HTTP_HOST.
        -- HTTP_HOST should include the port according to RFC2616 sec 14.23
-       -- Some servers (e.g. lighttpd) also seem to include the port in 
-       -- SERVER_NAME. 
+       -- Some servers (e.g. lighttpd) also seem to include the port in
+       -- SERVER_NAME.
        -- We include the port if it is in HTTP_HOST or SERVER_NAME, or if
        -- it is a non-standard port.
        let (host,port) = case break (==':') h of
-                           (_,"")  -> (h, if (not https && p == 80) 
-                                            || (https && p == 443) 
+                           (_,"")  -> (h, if (not https && p == 80)
+                                            || (https && p == 443)
                                            then "" else ':':show p)
                            (h',p') -> (h',p')
-       let auth = URIAuth { uriUserInfo = "", 
+       let auth = URIAuth { uriUserInfo = "",
                             uriRegName = host,
                             uriPort = port }
-       return $ nullURI { uriScheme = if https then "https:" else "http:", 
+       return $ nullURI { uriScheme = if https then "https:" else "http:",
                           uriAuthority = Just auth,
                           uriPath = escapePath name }
 
@@ -459,15 +459,15 @@ progURI =
 --   be different from the one requested by the client.
 --   See also 'requestURI'.
 --
--- Characters in the components of the returned URI are escaped 
+-- Characters in the components of the returned URI are escaped
 -- when needed, as required by "Network.URI".
 queryURI :: MonadCGI m => m URI
-queryURI = 
+queryURI =
     do uri  <- progURI
        path <- pathInfo
        qs   <- liftM (\q -> if null q then q else '?':q) $ queryString
-       return $ uri { uriPath = uriPath uri ++ escapePath path, 
-                      uriQuery = qs } 
+       return $ uri { uriPath = uriPath uri ++ escapePath path,
+                      uriQuery = qs }
 
 -- | Does percent-encoding as needed for URI path components.
 escapePath :: String -> String
@@ -480,7 +480,7 @@ escapePath = escapeURIString isUnescapedInURIPath
 --   provide the information needed to reconstruct the request URI,
 --   this function returns the same value as 'queryURI'.
 --
--- Characters in the components of the returned URI are escaped 
+-- Characters in the components of the returned URI are escaped
 -- when needed, as required by "Network.URI".
 requestURI :: MonadCGI m => m URI
 requestURI =
@@ -490,7 +490,7 @@ requestURI =
        mreq <- liftM (>>= parseRelativeReference) $ getVar "REQUEST_URI"
        return $ case mreq of
                  Nothing  -> uri
-                 Just req -> uri { 
+                 Just req -> uri {
                                   uriPath  = uriPath req,
                                   uriQuery = uriQuery req
                                  }
@@ -524,14 +524,14 @@ getInputFPS = liftM (fmap inputValue) . getInput_
 -- Example:
 --
 -- > vals <- getMultiInput "my_checkboxes"
-getMultiInput :: MonadCGI m => 
+getMultiInput :: MonadCGI m =>
                  String -- ^ The name of the variable.
               -> m [String] -- ^ The values of the variable,
                             -- or the empty list if the variable was not set.
 getMultiInput = liftM (map BS.unpack) . getMultiInputFPS
 
 -- | Same as 'getMultiInput' but using 'ByteString's.
-getMultiInputFPS :: MonadCGI m => 
+getMultiInputFPS :: MonadCGI m =>
                     String -- ^ The name of the variable.
                  -> m [ByteString] -- ^ The values of the variable,
                             -- or the empty list if the variable was not set.
@@ -552,7 +552,7 @@ getInputFilename = liftM (>>= inputFilename) . getInput_
 getInputContentType :: MonadCGI m =>
                        String   -- ^ The name of the variable.
                     -> m (Maybe String) -- ^ The content type, formatted as a string.
-getInputContentType = 
+getInputContentType =
     liftM (fmap (showContentType . inputContentType)) . getInput_
 
 -- | Same as 'getInput', but tries to read the value to the desired type.
@@ -626,7 +626,7 @@ deleteCookie = setCookie . Cookie.deleteCookie
 -- * Headers
 --
 
--- | Add a response header. 
+-- | Add a response header.
 --   Example:
 --
 -- > setHeader "Content-type" "text/plain"
