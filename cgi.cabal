@@ -44,7 +44,7 @@ Library
   Build-depends:
     network >= 2.0,
     parsec >= 2.0,
-    mtl==2.2.1.*,
+    mtl==2.2.*,
     exceptions,
     xhtml >= 3000.0.0
   If flag(split-base)
