@@ -39,7 +39,6 @@ Library
   ghc-options: -Wall
 
   Build-depends:
-    network >= 2.0,
     parsec >= 2.0,
     mtl==2.2.*,
     exceptions,
@@ -50,7 +49,7 @@ Library
     old-locale,
     containers
   If flag(network-uri)
-    Build-depends: network-uri >= 2.6
+    Build-depends: network-uri == 2.6.*, network == 2.6.*
   Else
     Build-depends: network < 2.6
 
