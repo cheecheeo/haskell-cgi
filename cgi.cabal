@@ -39,15 +39,15 @@ Library
   ghc-options: -Wall
 
   Build-depends:
-    parsec >= 2.0 && <= 3.1,
+    parsec >= 2.0 && < 3.2,
     mtl==2.2.*,
-    exceptions <= 0.6,
-    xhtml >= 3000.0.0 && <= 3000.2,
-    bytestring <= 0.10,
+    exceptions < 0.7,
+    xhtml >= 3000.0.0 && < 3000.3,
+    bytestring < 0.11,
     base >= 4.5 && < 5,
-    old-time <= 1.1,
-    old-locale <= 1.0,
-    containers <= 0.5
+    old-time < 1.2,
+    old-locale < 1.1,
+    containers < 0.6
   If flag(network-uri)
     Build-depends: network-uri == 2.6.*, network == 2.6.*
   Else
