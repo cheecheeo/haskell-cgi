@@ -18,9 +18,6 @@ source-repository head
   type: git
   location: git://github.com/cheecheeo/stats.git
 
-Flag split-base
-Flag bytestring-in-base
-Flag extensible-exceptions-in-base
 Flag network-uri
   description: Get Network.URI from the network-uri package
   default: True
@@ -42,25 +39,17 @@ Library
   ghc-options: -Wall
 
   Build-depends:
-    network >= 2.0,
-    parsec >= 2.0,
-    mtl >= 1.0,
-    MonadCatchIO-mtl,
-    xhtml >= 3000.0.0
-  If flag(split-base)
-    Build-depends: base >= 3 && < 5, old-time, old-locale, containers
-  Else
-    Build-depends: base < 3
-  If flag(bytestring-in-base)
-    Build-depends: base >= 2 && < 3
-  Else
-    Build-depends: base < 2 || < 5, bytestring
-  If flag(extensible-exceptions-in-base)
-    Build-depends: base >= 4
-  Else
-    Build-depends: base < 4, extensible-exceptions
+    parsec >= 2.0 && < 3.2,
+    mtl>=2.2.1 && < 2.3,
+    exceptions < 0.7,
+    xhtml >= 3000.0.0 && < 3000.3,
+    bytestring < 0.11,
+    base >= 4.5 && < 5,
+    old-time < 1.2,
+    old-locale < 1.1,
+    containers < 0.6
   If flag(network-uri)
-    Build-depends: network-uri >= 2.6
+    Build-depends: network-uri == 2.6.*, network == 2.6.*
   Else
     Build-depends: network < 2.6
 
