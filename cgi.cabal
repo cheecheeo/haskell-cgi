@@ -1,7 +1,7 @@
 Name: cgi
-Version: 3001.1.8.5
-Copyright: Bjorn Bringert, Andy Gill, Anders Kaseorg, Ian Lynagh,
-           Erik Meijer, Sven Panne, Jeremy Shaw
+Version: 3001.2.0.0
+Copyright: Bjorn Bringert, John Chee, Andy Gill, Anders Kaseorg,
+           Ian Lynagh, Erik Meijer, Sven Panne, Jeremy Shaw
 Category: Network
 Maintainer: John Chee <cheecheeo@gmail.com>
 Author: Bjorn Bringert
