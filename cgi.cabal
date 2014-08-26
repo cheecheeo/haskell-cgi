@@ -40,7 +40,7 @@ Library
 
   Build-depends:
     parsec >= 2.0 && < 3.2,
-    mtl>=2.2.1,
+    mtl>=2.2.1 && < 2.3,
     exceptions < 0.7,
     xhtml >= 3000.0.0 && < 3000.3,
     bytestring < 0.11,
