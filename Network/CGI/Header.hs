@@ -7,7 +7,7 @@
 --                (c) Bjorn Bringert 2005-2006
 -- License     :  BSD-style
 --
--- Maintainer  :  Anders Kaseorg <andersk@mit.edu>
+-- Maintainer  :  John Chee <cheecheeo@gmail.com>
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -23,7 +23,7 @@ module Network.CGI.Header (
                               pHeaders,
 
                               -- * Content-type
-                              ContentType(..), 
+                              ContentType(..),
                               getContentType,
                               parseContentType,
                               showContentType,
@@ -34,8 +34,8 @@ module Network.CGI.Header (
 
                               -- * Content-disposition
                               ContentDisposition(..),
-                              getContentDisposition,                           
-                              
+                              getContentDisposition,
+
                               -- * Utilities
                               parseM,
                               caseInsensitiveEq,
@@ -75,7 +75,7 @@ pHeaders :: Parser Headers
 pHeaders = many pHeader
 
 pHeader :: Parser (HeaderName, String)
-pHeader = 
+pHeader =
     do name <- many1 headerNameChar
        _ <- char ':'
        _ <- many ws1
@@ -85,7 +85,7 @@ pHeader =
        return (HeaderName name, concat (line:extraLines))
 
 extraFieldLine :: Parser String
-extraFieldLine = 
+extraFieldLine =
     do sp <- ws1
        line <- lineString
        _ <- crLf
@@ -110,7 +110,7 @@ p_parameter :: Parser (String,String)
 p_parameter = try $
   do _ <- lexeme $ char ';'
      p_name <- lexeme $ p_token
-     -- Don't allow parameters named q. This is needed for parsing Accept-X 
+     -- Don't allow parameters named q. This is needed for parsing Accept-X
      -- headers. From RFC 2616 14.1:
      --    Note: Use of the "q" parameter name to separate media type
      --    parameters from Accept extension parameters is due to historical
@@ -125,13 +125,13 @@ p_parameter = try $
      -- Workaround for seemingly standardized web browser bug
      -- where nothing is escaped in the filename parameter
      -- of the content-disposition header in multipart/form-data
-     let litStr = if p_name == "filename" 
+     let litStr = if p_name == "filename"
                    then buggyLiteralString
                    else literalString
      p_value <- litStr <|> p_token
      return (map toLower p_name, p_value)
 
--- 
+--
 -- * Content type
 --
 
@@ -141,7 +141,7 @@ p_parameter = try $
 --   string representation.
 --   See <http://www.ietf.org/rfc/rfc2046.txt> for more
 --   information about MIME media types.
-data ContentType = 
+data ContentType =
 	ContentType {
                      -- | The top-level media type, the general type
                      --   of the data. Common examples are
@@ -153,15 +153,15 @@ data ContentType =
                      --   \"jpeg\", \"form-data\", etc.
                      ctSubtype :: String,
                      -- | Media type parameters. On common example is
-                     --   the charset parameter for the \"text\" 
+                     --   the charset parameter for the \"text\"
                      --   top-level type, e.g. @(\"charset\",\"ISO-8859-1\")@.
                      ctParameters :: [(String, String)]
                     }
     deriving (Show, Read)
 
 instance Eq ContentType where
-    x == y = ctType x `caseInsensitiveEq` ctType y 
-             && ctSubtype x `caseInsensitiveEq` ctSubtype y 
+    x == y = ctType x `caseInsensitiveEq` ctType y
+             && ctSubtype x `caseInsensitiveEq` ctSubtype y
              && ctParameters x == ctParameters y
 
 instance Ord ContentType where
@@ -170,7 +170,7 @@ instance Ord ContentType where
                              ctParameters x `compare` ctParameters y]
 
 instance HeaderValue ContentType where
-    parseHeaderValue = 
+    parseHeaderValue =
         do _ <- many ws1
            c_type <- p_token
            _ <- char '/'
@@ -201,7 +201,7 @@ data ContentTransferEncoding =
     deriving (Show, Read, Eq, Ord)
 
 instance HeaderValue ContentTransferEncoding where
-    parseHeaderValue = 
+    parseHeaderValue =
         do _ <- many ws1
            c_cte <- p_token
            return $ ContentTransferEncoding (map toLower c_cte)
@@ -219,12 +219,12 @@ data ContentDisposition =
     deriving (Show, Read, Eq, Ord)
 
 instance HeaderValue ContentDisposition where
-    parseHeaderValue = 
+    parseHeaderValue =
         do _ <- many ws1
            c_cd <- p_token
            c_parameters <- many p_parameter
            return $ ContentDisposition (map toLower c_cd) c_parameters
-    prettyHeaderValue (ContentDisposition t hs) = 
+    prettyHeaderValue (ContentDisposition t hs) =
         t ++ concat ["; " ++ n ++ "=" ++ quote v | (n,v) <- hs]
             where quote x = "\"" ++ x ++ "\"" -- NOTE: silly, but de-facto standard
 
@@ -250,7 +250,7 @@ caseInsensitiveEq x y = map toLower x == map toLower y
 caseInsensitiveCompare :: String -> String -> Ordering
 caseInsensitiveCompare x y = map toLower x `compare` map toLower y
 
--- 
+--
 -- * Parsing utilities
 --
 
@@ -281,11 +281,11 @@ literalString = do _ <- char '\"'
 --
 -- Note that this eats everything until the last double quote on the line.
 buggyLiteralString :: Parser String
-buggyLiteralString = 
+buggyLiteralString =
     do _ <- char '\"'
        str <- manyTill anyChar (try lastQuote)
        return str
-  where lastQuote = do _ <- char '\"' 
+  where lastQuote = do _ <- char '\"'
                        notFollowedBy (try (many (noneOf "\"") >> char '\"'))
 
 headerNameChar :: Parser Char

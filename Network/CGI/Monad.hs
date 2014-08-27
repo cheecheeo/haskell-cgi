@@ -6,7 +6,7 @@
 -- Copyright   :  (c) Bjorn Bringert 2006
 -- License     :  BSD-style
 --
--- Maintainer  :  Anders Kaseorg <andersk@mit.edu>
+-- Maintainer  :  John Chee <cheecheeo@gmail.com>
 -- Stability   :  experimental
 -- Portability :  non-portable
 --

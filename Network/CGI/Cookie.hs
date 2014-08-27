@@ -5,7 +5,7 @@
 --                (c) Ian Lynagh 2005
 -- License     :  BSD-style
 --
--- Maintainer  :  Anders Kaseorg <andersk@mit.edu>
+-- Maintainer  :  John Chee <cheecheeo@gmail.com>
 -- Stability   :  experimental
 -- Portability :  portable
 --
@@ -129,7 +129,7 @@ showCookie c = concat $ intersperse "; " $
 -- | Show a name-value pair. FIXME: if the name or value
 --   contains semicolons, this breaks. The problem
 --   is that the original cookie spec does not mention
---   how to do escaping or quoting. 
+--   how to do escaping or quoting.
 showPair :: String -- ^ name
          -> String -- ^ value
          -> String
@@ -139,7 +139,7 @@ showPair name value = name ++ "=" ++ value
 -- | Gets all the cookies from a Cookie: header value
 readCookies :: String             -- ^ String to parse
             -> [(String,String)]  -- ^ Cookie name - cookie value pairs
-readCookies s = 
+readCookies s =
     let (xs,ys) = break (=='=') (dropWhile isSpace s)
         (zs,ws) = break (==';') (dropWhile isSpace (drop 1 ys))
      in if null xs then [] else (xs,zs):readCookies (drop 1 ws)

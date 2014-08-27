@@ -7,7 +7,7 @@
 --                (c) Jeremy Shaw 2005
 -- License     :  BSD-style
 --
--- Maintainer  :  Anders Kaseorg <andersk@mit.edu>
+-- Maintainer  :  John Chee <cheecheeo@gmail.com>
 -- Stability   :  experimental
 -- Portability :  non-portable (uses Control.Monad.State)
 --
@@ -75,10 +75,10 @@ accept' sock = do
  return (handle,addr)
 
 run :: MonadIO m => Handle -> Handle -> ([(String,String)] -> IO Html) -> m ()
-run inh outh f = 
+run inh outh f =
     do env <- getCGIVars
        hRunCGI env inh outh f'
-  where f' req = do let vs = Map.toList (cgiVars req) 
+  where f' req = do let vs = Map.toList (cgiVars req)
                         is = [ (n,BS.unpack (inputValue i)) | (n,i) <- cgiInputs req ]
                     html <- liftIO (f (vs++is))
                     return ([], CGIOutput $ BS.pack $ renderHtml html)
