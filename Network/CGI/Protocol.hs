@@ -4,7 +4,7 @@
 -- Copyright   :  (c) Bjorn Bringert 2006
 -- License     :  BSD-style
 --
--- Maintainer  :  Anders Kaseorg <andersk@mit.edu>
+-- Maintainer  :  John Chee <cheecheeo@gmail.com>
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -14,7 +14,7 @@
 {-# LANGUAGE CPP, DeriveDataTypeable #-}
 module Network.CGI.Protocol (
   -- * CGI request
-  CGIRequest(..), Input(..), 
+  CGIRequest(..), Input(..),
   -- * CGI response
   CGIResult(..),
   Headers, HeaderName(..),
@@ -61,7 +61,7 @@ import Network.CGI.Multipart
 --
 
 -- | The input to a CGI action.
-data CGIRequest = 
+data CGIRequest =
     CGIRequest {
                 -- | Environment variables.
                 cgiVars :: Map String String,
@@ -101,27 +101,27 @@ data CGIResult = CGIOutput ByteString
                  deriving (Show, Read, Eq, Ord, Typeable)
 #else
                  deriving (Show, Read, Eq, Ord)
-#endif		 
+#endif
 
 --
 -- * Running CGI actions
 --
 
--- | Runs a CGI action in a given environment. Uses Handles for input and output. 
+-- | Runs a CGI action in a given environment. Uses Handles for input and output.
 hRunCGI :: MonadIO m =>
            [(String,String)] -- ^ CGI environment variables, e.g. from 'getCGIVars'.
         -> Handle -- ^ Handle that input will be read from, e.g. 'System.IO.stdin'.
         -> Handle -- ^ Handle that output will be written to, e.g. 'System.IO.stdout'.
         -> (CGIRequest -> m (Headers, CGIResult)) -- ^ CGI action
         -> m ()
-hRunCGI env hin hout f = 
+hRunCGI env hin hout f =
     do liftIO $ hSetBinaryMode hin True
        inp <- liftIO $ BS.hGetContents hin
        outp <- runCGIEnvFPS env inp f
        liftIO $ BS.hPut hout outp
        liftIO $ hFlush hout
 
--- | Runs a CGI action in a given environment. Uses lazy ByteStrings 
+-- | Runs a CGI action in a given environment. Uses lazy ByteStrings
 --   for input and output.
 runCGIEnvFPS :: Monad m =>
              [(String,String)] -- ^ CGI environment variables.
@@ -143,10 +143,10 @@ runCGIEnvFPS vars inp f
            CGINothing -> formatResponse BS.empty hs
 
 formatResponse :: ByteString -> Headers -> ByteString
-formatResponse c hs = 
+formatResponse c hs =
     -- NOTE: we use CRLF since lighttpd mod_fastcgi can't handle
     -- just LF if there are CRs in the content.
-    unlinesCrLf ([BS.pack (n++": "++v) | (HeaderName n,v) <- hs] 
+    unlinesCrLf ([BS.pack (n++": "++v) | (HeaderName n,v) <- hs]
                 ++ [BS.empty,c])
   where unlinesCrLf = BS.concat . intersperse (BS.pack "\r\n")
 
@@ -163,7 +163,7 @@ defaultContentType = "text/html; charset=ISO-8859-1"
 --   method and the content-type.
 decodeInput :: [(String,String)] -- ^ CGI environment variables.
             -> ByteString        -- ^ Request body.
-            -> ([(String,Input)],ByteString)  
+            -> ([(String,Input)],ByteString)
                -- ^ A list of input variables and values, and the request body
                -- if it was not interpreted.
 decodeInput env inp =
@@ -218,13 +218,13 @@ formInput qs = [(n, simpleInput v) | (n,v) <- formDecode qs]
 
 -- | Formats name-value pairs as application\/x-www-form-urlencoded.
 formEncode :: [(String,String)] -> String
-formEncode xs = 
+formEncode xs =
     concat $ intersperse "&" [urlEncode n ++ "=" ++ urlEncode v | (n,v) <- xs]
 
 -- | Converts a single value to the application\/x-www-form-urlencoded encoding.
 urlEncode :: String -> String
 urlEncode = replace ' ' '+' . escapeURIString okChar
-  where okChar c = c == ' ' || 
+  where okChar c = c == ' ' ||
                    (isUnescapedInURI c && c `notElem` "&=+")
 
 -- | Gets the name-value pairs from application\/x-www-form-urlencoded data.
@@ -234,7 +234,7 @@ formDecode s = (urlDecode n, urlDecode (drop 1 v)) : formDecode (drop 1 rs)
     where (nv,rs) = break (=='&') s
           (n,v) = break (=='=') nv
 
--- | Converts a single value from the 
+-- | Converts a single value from the
 --   application\/x-www-form-urlencoded encoding.
 urlDecode :: String -> String
 urlDecode = unEscapeString . replace '+' ' '
@@ -249,7 +249,7 @@ bodyInput :: [(String,String)]
           -> ([(String,Input)], ByteString)
 bodyInput env inp =
    case lookup "REQUEST_METHOD" env of
-      Just "POST" -> 
+      Just "POST" ->
           let ctype = lookup "CONTENT_TYPE" env >>= parseContentType
            in decodeBody ctype $ takeInput env inp
       _ -> ([], inp)
@@ -258,11 +258,11 @@ bodyInput env inp =
 decodeBody :: Maybe ContentType
            -> ByteString
            -> ([(String,Input)], ByteString)
-decodeBody ctype inp = 
+decodeBody ctype inp =
     case ctype of
-               Just (ContentType "application" "x-www-form-urlencoded" _) 
+               Just (ContentType "application" "x-www-form-urlencoded" _)
                    -> (formInput (BS.unpack inp), BS.empty)
-               Just (ContentType "multipart" "form-data" ps) 
+               Just (ContentType "multipart" "form-data" ps)
                    -> (multipartDecode ps inp, BS.empty)
                Just _ -> ([], inp) -- unknown content-type, the user will have to
                             -- deal with it by looking at the raw content
@@ -272,10 +272,10 @@ decodeBody ctype inp =
 -- | Takes the right number of bytes from the input.
 takeInput :: [(String,String)]  -- ^ CGI environment variables.
           -> ByteString         -- ^ Request body.
-          -> ByteString         -- ^ CONTENT_LENGTH bytes from the request 
+          -> ByteString         -- ^ CONTENT_LENGTH bytes from the request
                                 --   body, or the empty string if there is no
                                 --   CONTENT_LENGTH.
-takeInput env req = 
+takeInput env req =
     case len of
            Just l  -> BS.take l req
            Nothing -> BS.empty
@@ -292,9 +292,9 @@ multipartDecode ps inp =
          Nothing -> [] -- FIXME: report that there was no boundary
 
 bodyPartToInput :: BodyPart -> (String,Input)
-bodyPartToInput (BodyPart hs b) = 
+bodyPartToInput (BodyPart hs b) =
     case getContentDisposition hs of
-              Just (ContentDisposition "form-data" ps) -> 
+              Just (ContentDisposition "form-data" ps) ->
                   (lookupOrNil "name" ps,
                    Input { inputValue = b,
                            inputFilename = lookup "filename" ps,
@@ -318,7 +318,7 @@ replace x y = map (\z -> if z == x then y else z)
 maybeRead :: Read a => String -> Maybe a
 maybeRead = fmap fst . listToMaybe . reads
 
--- | Same as 'lookup' specialized to strings, but 
+-- | Same as 'lookup' specialized to strings, but
 --   returns the empty string if lookup fails.
 lookupOrNil :: String -> [(String,String)] -> String
 lookupOrNil n = fromMaybe "" . lookup n

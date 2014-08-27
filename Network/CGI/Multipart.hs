@@ -7,7 +7,7 @@
 --                (c) Bjorn Bringert 2005-2006
 -- License     :  BSD-style
 --
--- Maintainer  :  Anders Kaseorg <andersk@mit.edu>
+-- Maintainer  :  John Chee <cheecheeo@gmail.com>
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -15,7 +15,7 @@
 -- Partly based on code from WASHMail.
 --
 -----------------------------------------------------------------------------
-module Network.CGI.Multipart 
+module Network.CGI.Multipart
     (
      -- * Multi-part messages
      MultiPart(..), BodyPart(..)
@@ -54,7 +54,7 @@ data BodyPart = BodyPart Headers ByteString
 -- | Read a multi-part message from a 'ByteString'.
 parseMultipartBody :: String -- ^ Boundary
                    -> ByteString -> MultiPart
-parseMultipartBody b = 
+parseMultipartBody b =
     MultiPart . mapMaybe parseBodyPart . splitParts (BS.pack b)
 
 -- | Read a multi-part message from a 'Handle'.
@@ -74,13 +74,13 @@ parseBodyPart s =
     return $ BodyPart hs bdy
 
 showMultipartBody :: String -> MultiPart -> ByteString
-showMultipartBody b (MultiPart bs) = 
+showMultipartBody b (MultiPart bs) =
     unlinesCRLF $ foldr (\x xs -> d:showBodyPart x:xs) [c,BS.empty] bs
  where d = BS.pack ("--" ++ b)
-       c = BS.pack ("--" ++ b ++ "--")       
+       c = BS.pack ("--" ++ b ++ "--")
 
 showBodyPart :: BodyPart -> ByteString
-showBodyPart (BodyPart hs c) = 
+showBodyPart (BodyPart hs c) =
     unlinesCRLF $ [BS.pack (n++": "++v) | (HeaderName n,v) <- hs] ++ [BS.empty,c]
 
 
@@ -90,7 +90,7 @@ showBodyPart (BodyPart hs c) =
 
 -- | Split a multipart message into the multipart parts.
 splitParts :: ByteString -- ^ The boundary, without the initial dashes
-           -> ByteString 
+           -> ByteString
            -> [ByteString]
 splitParts b = spl . dropPreamble b
   where
@@ -99,10 +99,10 @@ splitParts b = spl . dropPreamble b
             Just (s1,d,s2) | isClose b d -> [s1]
                            | otherwise -> s1:spl s2
 
--- | Drop everything up to and including the first line starting 
+-- | Drop everything up to and including the first line starting
 --   with the boundary.
 dropPreamble :: ByteString -- ^ The boundary, without the initial dashes
-             -> ByteString 
+             -> ByteString
              -> ByteString
 dropPreamble b s | BS.null s = BS.empty
                  | isBoundary b s = dropLine s
@@ -123,7 +123,7 @@ splitAtBoundary b s = spl 0
               Nothing -> Nothing
               Just (j,l) | isBoundary b s2 -> Just (s1,d,s3)
                          | otherwise -> spl (i+j+l)
-                  where 
+                  where
                   s1 = BS.take (i+j) s
                   s2 = BS.drop (i+j+l) s
                   (d,s3) = splitAtCRLF s2
@@ -138,7 +138,7 @@ isBoundary b s = startsWithDashes s && b `BS.isPrefixOf` BS.drop 2 s
 -- | Check whether a string for which 'isBoundary' returns true
 --   has two dashes after the boudary string.
 isClose :: ByteString -- ^ The boundary, without the initial dashes
-        -> ByteString 
+        -> ByteString
         -> Bool
 isClose b s = startsWithDashes (BS.drop (2+BS.length b) s)
 
@@ -190,7 +190,7 @@ splitAtCRLF s = case findCRLF s of
 -- | Get the index and length of the first CRLF, if any.
 findCRLF :: ByteString -- ^ String to split.
          -> Maybe (Int64,Int64)
-findCRLF s = 
+findCRLF s =
     case findCRorLF s of
               Nothing -> Nothing
               Just j | BS.null (BS.drop (j+1) s) -> Just (j,1)
@@ -206,7 +206,7 @@ startsWithCRLF :: ByteString -> Bool
 startsWithCRLF s = not (BS.null s) && (c == '\n' || c == '\r')
   where c = BS.index s 0
 
--- | Drop an initial CRLF, if any. If the string is empty, 
+-- | Drop an initial CRLF, if any. If the string is empty,
 --   nothing is done. If the string does not start with CRLF,
 --   the first character is dropped.
 dropCRLF :: ByteString -> ByteString
