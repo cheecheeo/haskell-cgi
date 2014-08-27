@@ -15,3 +15,6 @@ Its features include:
 - Basic exception handling and logging (these should be improved)
 - Low-level run functions that allow using programs written with 
   this package with protocols other than CGI, for example FastCGI.
+
+On hackage: http://hackage.haskell.org/package/cgi
+Source: https://github.com/cheecheeo/haskell-cgi
