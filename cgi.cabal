@@ -6,7 +6,7 @@ Category: Network
 Maintainer: John Chee <cheecheeo@gmail.com>
 Author: Bjorn Bringert
 Homepage: https://github.com/cheecheeo/haskell-cgi
-bug-reports: https://github.com/cheecheeo/stats/issues
+bug-reports: https://github.com/cheecheeo/haskell-cgi/issues
 License: BSD3
 License-file: LICENSE
 Synopsis: A library for writing CGI programs
@@ -17,7 +17,7 @@ Cabal-Version: >=1.6
 
 source-repository head
   type: git
-  location: git://github.com/cheecheeo/stats.git
+  location: git://github.com/cheecheeo/haskell-cgi.git
 
 Flag network-uri
   description: Get Network.URI from the network-uri package
