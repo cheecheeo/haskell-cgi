@@ -50,9 +50,7 @@ import Data.Typeable
 import Data.Typeable (Typeable(..), mkTyConApp, mkTyCon)
 #endif
 
-
-import Network.CGI.Header
-import Network.CGI.Multipart
+import Network.Multipart
 
 
 
