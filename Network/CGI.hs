@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -fallow-overlapping-instances #-}
+{-# LANGUAGE OverlappingInstances #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI

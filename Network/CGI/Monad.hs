@@ -29,7 +29,8 @@ module Network.CGI.Monad (
  ) where
 
 import Prelude hiding (catch)
-import Control.Exception as Exception (SomeException, throwIO)
+import Control.Exception as Exception (SomeException)
+import Control.Applicative (Applicative(..))
 import Control.Monad (liftM)
 import Control.Monad.Catch (MonadCatch, MonadThrow, throwM, catch, try)
 import Control.Monad.Except (MonadError(..))
@@ -66,6 +67,10 @@ instance (Typeable1 m, Typeable a) => Typeable (CGIT m a) where
 
 instance (Functor m, Monad m) => Functor (CGIT m) where
     fmap f c = CGIT (fmap f (unCGIT c))
+
+instance (Applicative m, Monad m) => Applicative (CGIT m) where
+    pure = CGIT . pure
+    f <*> x = CGIT (unCGIT f <*> unCGIT x)
 
 instance Monad m => Monad (CGIT m) where
     c >>= f = CGIT (unCGIT c >>= unCGIT . f)
@@ -113,7 +118,7 @@ instance MonadCatch m => MonadError SomeException (CGIT m) where
     catchError = catch
 
 -- | Throw an exception in a CGI monad. The monad is required to be
---   a 'MonadIO', so that we can use 'throwIO' to guarantee ordering.
+--   a 'MonadThrow', so that we can use 'throwM' to guarantee ordering.
 throwCGI :: (MonadCGI m, MonadThrow m) => SomeException -> m a
 throwCGI = throwM
 
