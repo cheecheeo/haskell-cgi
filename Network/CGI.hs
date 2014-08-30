@@ -94,12 +94,7 @@ module Network.CGI (
   , module Network.CGI.Compat
   ) where
 
-#if MIN_VERSION_base(4,0,0)
-import Control.Exception
-#else
-import Control.Exception.Extensible
-#endif
-  (Exception(..), SomeException, ErrorCall(..))
+import Control.Exception (Exception(..), SomeException, ErrorCall(..))
 import Control.Monad (liftM)
 import Control.Monad.Catch (MonadCatch)
 import Control.Monad.Trans (MonadIO, liftIO)

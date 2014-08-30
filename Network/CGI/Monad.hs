@@ -29,12 +29,7 @@ module Network.CGI.Monad (
  ) where
 
 import Prelude hiding (catch)
-#if MIN_VERSION_base(4,0,0)
-import Control.Exception
-#else
-import Control.Exception.Extensible
-#endif
-  as Exception (SomeException, throwIO)
+import Control.Exception as Exception (SomeException, throwIO)
 import Control.Monad (liftM)
 import Control.Monad.Catch (MonadCatch, MonadThrow, throwM, catch, try)
 import Control.Monad.Except (MonadError(..))
