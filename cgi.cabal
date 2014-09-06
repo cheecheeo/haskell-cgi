@@ -31,9 +31,7 @@ Library
     Network.CGI.Cookie,
     Network.CGI.Compat
   Other-modules:
-    Network.CGI.Accept,
-    Network.CGI.Multipart,
-    Network.CGI.Header
+    Network.CGI.Accept
   Extensions:
     CPP,
     MultiParamTypeClasses
@@ -48,7 +46,8 @@ Library
     base >= 4.5 && < 5,
     old-time < 1.2,
     old-locale < 1.1,
-    containers < 0.6
+    containers < 0.6,
+    multipart >= 0.1.2 && < 0.2
   If flag(network-uri)
     Build-depends: network-uri == 2.6.*, network == 2.6.*
   Else

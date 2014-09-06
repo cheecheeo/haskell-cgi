@@ -14,10 +14,11 @@ import Numeric
 
 import Text.ParserCombinators.Parsec
 
-import Network.CGI.Header
+import Network.Multipart
+import Network.Multipart.Header
 
 
--- 
+--
 -- * Accept-X headers
 --
 
@@ -59,7 +60,7 @@ quality :: Acceptable a => Accept a -> a -> Quality
 quality (Accept xs) y = fromMaybe 0 $ listToMaybe $ sort $ map snd $ sortBy (compareSpecificity `on` fst) $ filter ((`includes` y) . fst) xs
 
 compareSpecificity :: Acceptable a => a -> a -> Ordering
-compareSpecificity x y 
+compareSpecificity x y
     | x `includes` y && y `includes` x = EQ
     | x `includes` y = GT
     | y `includes` x = LT
