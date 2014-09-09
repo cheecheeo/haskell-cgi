@@ -65,10 +65,10 @@ instance (Typeable1 m, Typeable a) => Typeable (CGIT m a) where
                 [typeOf1 (undefined :: m a), typeOf (undefined :: a)]
 #endif
 
-instance (Functor m, Monad m) => Functor (CGIT m) where
+instance (Functor m) => Functor (CGIT m) where
     fmap f c = CGIT (fmap f (unCGIT c))
 
-instance (Applicative m, Monad m) => Applicative (CGIT m) where
+instance (Applicative m) => Applicative (CGIT m) where
     pure = CGIT . pure
     f <*> x = CGIT (unCGIT f <*> unCGIT x)
 
