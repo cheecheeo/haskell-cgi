@@ -13,6 +13,7 @@ Synopsis: A library for writing CGI programs
 Description:
  This is a Haskell library for writing CGI programs.
 Build-Type: Simple
+extra-source-files: changelog
 Cabal-Version: >=1.6
 
 source-repository head
