@@ -1,3 +1,7 @@
+3001.2.2.0
+
+* MonadMask instance for CGIT
+
 3001.2.1.0
 
 * Applicative instance for CGI Monad
