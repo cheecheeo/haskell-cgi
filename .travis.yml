@@ -3,9 +3,14 @@
 # The following enables several GHC versions to be tested; often it's enough to test only against the last release in a major GHC version. Feel free to omit lines listings versions you don't need/want testing for.
 env:
  - GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS=''
+ - GHCVER=7.4.2 CABALVER=1.22 CABALFLAGS=''
  - GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS=''
+ - GHCVER=7.6.3 CABALVER=1.22 CABALFLAGS=''
  - GHCVER=7.8.3 CABALVER=1.20 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
- - GHCVER=head CABALVER=1.20 CABALFLAGS='' # see section about GHC HEAD snapshots
+ - GHCVER=7.8.3 CABALVER=1.22 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.10.1 CABALVER=1.20 CABALFLAGS=''
+ - GHCVER=7.10.1 CABALVER=1.22 CABALFLAGS=''
+ - GHCVER=head CABALVER=1.20 CABALFLAGS=''
  - GHCVER=head CABALVER=1.20 CABALFLAGS='--allow-newer'
  - GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS='--allow-newer'
  - GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
