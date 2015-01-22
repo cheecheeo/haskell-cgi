@@ -22,6 +22,7 @@ before_install:
  - travis_retry sudo apt-get update
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER # see note about happy/alex
  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+ - cabal install -j -O2 packdeps
 
 install:
  - cabal update
@@ -34,6 +35,7 @@ script:
  - cabal test
  - cabal check
  - cabal sdist   # tests that a source-distribution can be generated
+ - find . -name '*.cabal' | xargs cabal exec packdeps # check to make sure that cgi is buildable with current dependencies
 
 # The following scriptlet checks that the resulting source distribution can be built & installed
  - export SRC_TGZ=$(cabal-$CABALVER info . | awk '{print $2 ".tar.gz";exit}') ;
