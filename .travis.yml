@@ -8,6 +8,8 @@ env:
  - GHCVER=7.6.3 CABALVER=1.22 CABALFLAGS=''
  - GHCVER=7.8.3 CABALVER=1.20 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.8.3 CABALVER=1.22 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.8.4 CABALVER=1.20 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.8.4 CABALVER=1.22 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.10.1 CABALVER=1.20 CABALFLAGS=''
  - GHCVER=7.10.1 CABALVER=1.22 CABALFLAGS=''
  - GHCVER=head CABALVER=1.20 CABALFLAGS=''
@@ -36,7 +38,7 @@ script:
  - cabal test
  - cabal check
  - cabal sdist   # tests that a source-distribution can be generated
- - find . -name '*.cabal' | xargs cabal exec packdeps # check to make sure that cgi is buildable with current dependencies
+ - cabal --version | grep --quiet '1.22' && find . -name '*.cabal' | xargs cabal exec packdeps || true
 
 # The following scriptlet checks that the resulting source distribution can be built & installed
  - export SRC_TGZ=$(cabal-$CABALVER info . | awk '{print $2 ".tar.gz";exit}') ;
@@ -56,3 +58,5 @@ matrix:
     - env: GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS='--allow-newer'
     - env: GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
     - env: GHCVER=7.8.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
+    - env: GHCVER=7.10.1 CABALVER=1.20 CABALFLAGS=''
+    - env: GHCVER=7.10.1 CABALVER=1.22 CABALFLAGS=''
