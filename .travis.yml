@@ -3,9 +3,16 @@
 # The following enables several GHC versions to be tested; often it's enough to test only against the last release in a major GHC version. Feel free to omit lines listings versions you don't need/want testing for.
 env:
  - GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS=''
+ - GHCVER=7.4.2 CABALVER=1.22 CABALFLAGS=''
  - GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS=''
+ - GHCVER=7.6.3 CABALVER=1.22 CABALFLAGS=''
  - GHCVER=7.8.3 CABALVER=1.20 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
- - GHCVER=head CABALVER=1.20 CABALFLAGS='' # see section about GHC HEAD snapshots
+ - GHCVER=7.8.3 CABALVER=1.22 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.8.4 CABALVER=1.20 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.8.4 CABALVER=1.22 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.10.1 CABALVER=1.20 CABALFLAGS=''
+ - GHCVER=7.10.1 CABALVER=1.22 CABALFLAGS=''
+ - GHCVER=head CABALVER=1.20 CABALFLAGS=''
  - GHCVER=head CABALVER=1.20 CABALFLAGS='--allow-newer'
  - GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS='--allow-newer'
  - GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
@@ -17,9 +24,11 @@ before_install:
  - travis_retry sudo apt-get update
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER # see note about happy/alex
  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+ - cabal --version
+ - cabal update
+ - cabal install -j -O2 packdeps
 
 install:
- - cabal update
  - cabal install $CABALFLAGS --only-dependencies --enable-tests --enable-benchmarks
 
 # Here starts the actual work to be performed for the package under test; any command which exits with a non-zero exit code causes the build to fail.
@@ -29,6 +38,7 @@ script:
  - cabal test
  - cabal check
  - cabal sdist   # tests that a source-distribution can be generated
+ - cabal --version | grep --quiet '1.22' && find . -name '*.cabal' | xargs cabal exec packdeps || true
 
 # The following scriptlet checks that the resulting source distribution can be built & installed
  - export SRC_TGZ=$(cabal-$CABALVER info . | awk '{print $2 ".tar.gz";exit}') ;
@@ -48,3 +58,5 @@ matrix:
     - env: GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS='--allow-newer'
     - env: GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
     - env: GHCVER=7.8.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
+    - env: GHCVER=7.10.1 CABALVER=1.20 CABALFLAGS=''
+    - env: GHCVER=7.10.1 CABALVER=1.22 CABALFLAGS=''
