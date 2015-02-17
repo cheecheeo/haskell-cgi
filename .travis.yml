@@ -38,7 +38,10 @@ script:
  - cabal test
  - cabal check
  - cabal sdist   # tests that a source-distribution can be generated
- - cabal --version | grep --quiet '1.22' && find . -name '*.cabal' | xargs cabal exec packdeps || true
+ - cabal --version | grep --quiet '1.22';
+   if [ $? -eq 0 ]; then
+      find . -name '*.cabal' | xargs cabal exec packdeps
+   fi
 
 # The following scriptlet checks that the resulting source distribution can be built & installed
  - export SRC_TGZ=$(cabal-$CABALVER info . | awk '{print $2 ".tar.gz";exit}') ;
