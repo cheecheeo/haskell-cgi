@@ -62,4 +62,3 @@ matrix:
     - env: GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
     - env: GHCVER=7.8.3 CABALVER=1.20 CABALFLAGS='--allow-newer'
     - env: GHCVER=7.10.1 CABALVER=1.20 CABALFLAGS=''
-    - env: GHCVER=7.10.1 CABALVER=1.22 CABALFLAGS=''
