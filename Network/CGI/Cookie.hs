@@ -29,9 +29,9 @@ module Network.CGI.Cookie (
 import Data.Char (isSpace)
 import Data.List (intersperse)
 import Data.Maybe (catMaybes)
-import System.Locale (defaultTimeLocale, rfc822DateFormat)
-import System.Time (CalendarTime(..), Month(..), Day(..),
-                    formatCalendarTime)
+import Data.Time.Calendar (Day(..))
+import Data.Time.Clock (UTCTime(..))
+import Data.Time.Format (defaultTimeLocale, formatTime, rfc822DateFormat)
 
 --
 -- * Types
@@ -47,7 +47,7 @@ data Cookie = Cookie {
                       --   cookie expires when the browser sessions ends.
                       --   If the date is in the past, the client should
                       --   delete the cookie immediately.
-                      cookieExpires :: Maybe CalendarTime,
+                      cookieExpires :: Maybe UTCTime,
                       -- | The domain suffix to which this cookie will be sent.
                       cookieDomain :: Maybe String,
                       -- | The path to which this cookie will be sent.
@@ -96,20 +96,7 @@ deleteCookie :: Cookie  -- ^ Cookie to delete. The only fields that matter
              -> Cookie
 deleteCookie c = c { cookieExpires = Just epoch }
     where
-    epoch = CalendarTime {
-                          ctYear = 1970,
-                          ctMonth = January,
-                          ctDay = 1,
-                          ctHour = 0,
-                          ctMin = 0,
-                          ctSec = 0,
-                          ctPicosec = 0,
-                          ctWDay = Thursday,
-                          ctYDay = 1,
-                          ctTZName = "GMT",
-                          ctTZ = 0,
-                          ctIsDST = False
-                         }
+    epoch = UTCTime (ModifiedJulianDay 40587) 0
 
 --
 -- * Reading and showing cookies
@@ -124,7 +111,7 @@ showCookie c = concat $ intersperse "; " $
           domain = fmap (showPair "domain") (cookieDomain c)
           path = fmap (showPair "path") (cookiePath c)
           secure = if cookieSecure c then Just "secure" else Nothing
-          dateFmt = formatCalendarTime defaultTimeLocale rfc822DateFormat
+          dateFmt = formatTime defaultTimeLocale rfc822DateFormat
 
 -- | Show a name-value pair. FIXME: if the name or value
 --   contains semicolons, this breaks. The problem
