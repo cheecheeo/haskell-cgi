@@ -13,7 +13,7 @@
 -- Portability :  non-portable (uses Control.Monad.State)
 --
 -- Simple Library for writing CGI programs.
--- See <http://hoohoo.ncsa.uiuc.edu/cgi/interface.html> for the
+-- See <https://web.archive.org/web/20100109233524/http://hoohoo.ncsa.illinois.edu/cgi/interface.html> for the
 -- CGI specification.
 --
 -- This version of the library is for systems with version 2.0 or greater
