@@ -239,6 +239,9 @@ urlDecode :: String -> String
 urlDecode = unEscapeString . replace '+' ' '
 
 -- | Unescape a percent-encoded string, but doesn't decode UTF-8 encoding.
+--
+-- >>> unEscapeString "Hell%C3%B3 w%C3%B3rld"
+-- "Hell\195\179 w\195\179rld"
 unEscapeString :: String -> String
 unEscapeString [] = ""
 unEscapeString ('%':x1:x2:s) | isHexDigit x1 && isHexDigit x2 =
