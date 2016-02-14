@@ -176,7 +176,7 @@ simpleInput v = Input { inputValue = BS.pack v,
 
 -- | The default content-type for variables.
 defaultInputType :: ContentType
-defaultInputType = ContentType "text" "plain" [] -- FIXME: use some default encoding?
+defaultInputType = ContentType "text" "plain" [("charset","windows-1252")]
 
 --
 -- * Environment variables
