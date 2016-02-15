@@ -136,7 +136,7 @@ runCGI f = do env <- getCGIVars
 
 -- | Output a 'String'. The output is assumed to be text\/html, encoded using
 --   ISO-8859-1. To change this, set the Content-type header using
---   'setHeader'.
+--   'setHeader' and perhaps use @outputFPS@ instead.
 output :: MonadCGI m =>
           String        -- ^ The string to output.
        -> m CGIResult
