@@ -10,6 +10,11 @@ This project adheres to the [Package Versiioning Policy](https://wiki.haskell.or
 - Functor and Applicative instance of CGIT no longer constrain Functor or
 Applicative parameter to be an instance of Monad
 
+## 3001.2.2.3
+
+### Changed
+* CGI.hs haddock: Use web.archive.org link for CGI specification
+
 ## 3001.2.2.2
 ### Changed
 - Added support for building with mtl < 2.2.1 via flags
