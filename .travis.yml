@@ -4,14 +4,19 @@
 env:
  - GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS=''
  - GHCVER=7.4.2 CABALVER=1.22 CABALFLAGS=''
+ - GHCVER=7.4.2 CABALVER=1.24 CABALFLAGS=''
  - GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS=''
  - GHCVER=7.6.3 CABALVER=1.22 CABALFLAGS=''
+ - GHCVER=7.6.3 CABALVER=1.24 CABALFLAGS=''
  - GHCVER=7.8.3 CABALVER=1.20 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.8.3 CABALVER=1.22 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.8.3 CABALVER=1.24 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.8.4 CABALVER=1.20 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.8.4 CABALVER=1.22 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
+ - GHCVER=7.8.4 CABALVER=1.24 CABALFLAGS='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.10.1 CABALVER=1.20 CABALFLAGS=''
  - GHCVER=7.10.1 CABALVER=1.22 CABALFLAGS=''
+ - GHCVER=7.10.1 CABALVER=1.24 CABALFLAGS=''
  - GHCVER=head CABALVER=1.20 CABALFLAGS=''
  - GHCVER=head CABALVER=1.20 CABALFLAGS='--allow-newer'
  - GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS='--allow-newer'
