@@ -67,9 +67,9 @@ script:
 matrix:
   fast_finish: true
   allow_failures:
-    - env: GHCVER=head CABALVER=1.24 CABALFLAGS='' # see section about GHC HEAD snapshots
-    - env: GHCVER=head CABALVER=1.24 CABALFLAGS='--allow-newer'
-    - env: GHCVER=7.4.2 CABALVER=1.24 CABALFLAGS='--allow-newer'
-    - env: GHCVER=7.6.3 CABALVER=1.24 CABALFLAGS='--allow-newer'
-    - env: GHCVER=7.8.4 CABALVER=1.24 CABALFLAGS='--allow-newer'
-    - env: GHCVER=7.10.3 CABALVER=1.24 CABALFLAGS=''
+    - env: GHCVER=head CABALVER=1.24 CABALFLAGS='' TEST='yes' # see section about GHC HEAD snapshots
+    - env: GHCVER=head CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
+    - env: GHCVER=7.4.2 CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
+    - env: GHCVER=7.6.3 CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
+    - env: GHCVER=7.8.4 CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
+    - env: GHCVER=7.10.3 CABALVER=1.24 CABALFLAGS='' TEST='yes'
