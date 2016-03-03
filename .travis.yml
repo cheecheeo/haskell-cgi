@@ -11,14 +11,13 @@ env:
  - GHCVER=7.8.4 CABALVER=1.20 CABALFLAGS='' TEST='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.8.4 CABALVER=1.22 CABALFLAGS='' TEST='' #ghc 7.8 versions, see note about alex and happy
  - GHCVER=7.8.4 CABALVER=1.24 CABALFLAGS='' TEST='' #ghc 7.8 versions, see note about alex and happy
- - GHCVER=7.10.3 CABALVER=1.20 CABALFLAGS='' TEST=''
  - GHCVER=7.10.3 CABALVER=1.22 CABALFLAGS='' TEST=''
  - GHCVER=7.10.3 CABALVER=1.24 CABALFLAGS='' TEST='yes'
- - GHCVER=head CABALVER=1.20 CABALFLAGS='' TEST='yes'
- - GHCVER=head CABALVER=1.20 CABALFLAGS='--allow-newer' TEST='yes'
- - GHCVER=7.4.2 CABALVER=1.20 CABALFLAGS='--allow-newer' TEST='yes'
- - GHCVER=7.6.3 CABALVER=1.20 CABALFLAGS='--allow-newer' TEST='yes'
- - GHCVER=7.8.4 CABALVER=1.20 CABALFLAGS='--allow-newer' TEST='yes'
+ - GHCVER=head CABALVER=1.24 CABALFLAGS='' TEST='yes'
+ - GHCVER=head CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
+ - GHCVER=7.4.2 CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
+ - GHCVER=7.6.3 CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
+ - GHCVER=7.8.4 CABALVER=1.24 CABALFLAGS='--allow-newer' TEST='yes'
 
 # Note: the distinction between `before_install` and `install` is not important.
 before_install:
