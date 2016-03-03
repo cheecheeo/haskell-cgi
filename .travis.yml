@@ -31,7 +31,7 @@ before_install:
  - cabal install -j -O2 packdeps
 
 install:
- - if [ $TEST == 'yes' ]; then
+ - if [ "$TEST" == 'yes' ]; then
       cabal install $CABALFLAGS --only-dependencies --enable-tests --enable-benchmarks;
    else
       cabal install $CABALFLAGS --only-dependencies --enable-benchmarks;
@@ -39,13 +39,13 @@ install:
 
 # Here starts the actual work to be performed for the package under test; any command which exits with a non-zero exit code causes the build to fail.
 script:
- - if [ $TEST == 'yes' ]; then
+ - if [ "$TEST" == 'yes' ]; then
       cabal configure $CABALFLAGS --enable-benchmarks --enable-tests -v2;
    else
       cabal configure $CABALFLAGS --enable-benchmarks -v2;
    fi
  - cabal build   # this builds all libraries and executables (including tests/benchmarks)
- - if [ $TEST == 'yes' ]; then
+ - if [ "$TEST" == 'yes' ]; then
     cabal test;
    fi
  - cabal check
