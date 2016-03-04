@@ -1,5 +1,5 @@
 Name: cgi
-Version: 3001.2.2.4
+Version: 3001.3.0.0
 Copyright: Bjorn Bringert, John Chee, Andy Gill, Anders Kaseorg,
            Ian Lynagh, Erik Meijer, Sven Panne, Jeremy Shaw
 Category: Network
@@ -14,7 +14,7 @@ Description:
  This is a Haskell library for writing CGI programs.
 Build-Type: Simple
 extra-source-files: changelog
-Cabal-Version: >=1.6
+Cabal-Version: >=1.8
 
 source-repository head
   type: git
@@ -48,8 +48,7 @@ Library
     xhtml >= 3000.0.0 && < 3000.3,
     bytestring < 0.11,
     base >= 4.5 && < 5,
-    old-time < 1.2,
-    old-locale < 1.1,
+    time >= 1.5 && < 1.7,
     containers < 0.6,
     multipart >= 0.1.2 && < 0.2
   If flag(network-uri)
@@ -62,6 +61,19 @@ Library
   Else
     Build-depends:
       mtl>=2.2.1 && < 2.3
+
+test-suite doctests
+  type:             exitcode-stdio-1.0
+  ghc-options:      -threaded
+  main-is:          DocTestMain.hs
+  other-modules:
+    DocTest
+  hs-source-dirs:   src
+  ghc-options:      -Wall
+  build-depends:
+      base
+    , doctest >= 0.8 && < 0.11
+    , QuickCheck >= 2.8.1 && < 2.9
 
 --Executable:     printinput
 --Main-Is:        printinput.hs

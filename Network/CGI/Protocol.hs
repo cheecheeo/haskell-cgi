@@ -33,11 +33,12 @@ module Network.CGI.Protocol (
  ) where
 
 import Control.Monad.Trans (MonadIO(..))
+import Data.Char (chr, isHexDigit, digitToInt)
 import Data.List (intersperse)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import Data.Maybe (fromMaybe, listToMaybe, isJust)
-import Network.URI (unEscapeString,escapeURIString,isUnescapedInURI)
+import Network.URI (escapeURIString,isUnescapedInURI)
 import System.Environment (getEnvironment)
 import System.IO (Handle, hPutStrLn, stderr, hFlush, hSetBinaryMode)
 
@@ -175,7 +176,7 @@ simpleInput v = Input { inputValue = BS.pack v,
 
 -- | The default content-type for variables.
 defaultInputType :: ContentType
-defaultInputType = ContentType "text" "plain" [] -- FIXME: use some default encoding?
+defaultInputType = ContentType "text" "plain" [("charset","windows-1252")]
 
 --
 -- * Environment variables
@@ -236,6 +237,16 @@ formDecode s = (urlDecode n, urlDecode (drop 1 v)) : formDecode (drop 1 rs)
 --   application\/x-www-form-urlencoded encoding.
 urlDecode :: String -> String
 urlDecode = unEscapeString . replace '+' ' '
+
+-- | Unescape a percent-encoded string, but doesn't decode UTF-8 encoding.
+--
+-- >>> unEscapeString "Hell%C3%B3 w%C3%B3rld"
+-- "Hell\195\179 w\195\179rld"
+unEscapeString :: String -> String
+unEscapeString [] = ""
+unEscapeString ('%':x1:x2:s) | isHexDigit x1 && isHexDigit x2 =
+    chr (digitToInt x1 * 16 + digitToInt x2) : unEscapeString s
+unEscapeString (c:s) = c : unEscapeString s
 
 --
 -- * Request content and form-data stuff
