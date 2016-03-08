@@ -36,3 +36,18 @@ Applicative parameter to be an instance of Monad
 ## 3001.2.0.0
 ### Changed
 - GHC 7.8.3 support
+
+[Unreleased]:
+https://github.com/cheecheeo/haskell-cgi/compare/v3001.3.0.0...HEAD
+[3001.3.0.0]:
+https://github.com/cheecheeo/haskell-cgi/compare/v3001.2.2.3...v3001.3.0.0
+[3001.2.2.3]:
+https://github.com/cheecheeo/haskell-cgi/compare/v3001.2.2.2...v3001.2.2.3
+[3001.2.2.2]:
+https://github.com/cheecheeo/haskell-cgi/compare/v3001.2.2.1...v3001.2.2.2
+[3001.2.2.1]:
+https://github.com/cheecheeo/haskell-cgi/compare/v3001.2.2.0...v3001.2.2.1
+[3001.2.2.0]:
+https://github.com/cheecheeo/haskell-cgi/compare/v3001.2.1.0...v3001.2.2.0
+[3001.2.1.0]:
+https://github.com/cheecheeo/haskell-cgi/compare/v3001.2.0.0...v3001.2.1.0
