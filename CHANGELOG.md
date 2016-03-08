@@ -33,7 +33,7 @@ Applicative parameter to be an instance of Monad
 ### Changed
 - Deduplicate shared with `multipart` code
 
-## [3001.2.0.0]
+## 3001.2.0.0
 ### Changed
 - GHC 7.8.3 support
 
