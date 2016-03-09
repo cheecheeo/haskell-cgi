@@ -13,7 +13,7 @@ Synopsis: A library for writing CGI programs
 Description:
  This is a Haskell library for writing CGI programs.
 Build-Type: Simple
-extra-source-files: changelog
+extra-source-files: CHANGELOG.md
 Cabal-Version: >=1.8
 
 source-repository head
