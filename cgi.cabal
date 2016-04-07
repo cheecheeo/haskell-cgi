@@ -72,7 +72,7 @@ test-suite doctests
   ghc-options:      -Wall
   build-depends:
       base
-    , doctest >= 0.8 && < 0.11
+    , doctest >= 0.8 && < 0.12
     , QuickCheck >= 2.8.1 && < 2.9
 
 --Executable:     printinput
