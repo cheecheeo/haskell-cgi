@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
-This project adheres to the [Package Versiioning Policy](https://wiki.haskell.org/Package_versioning_policy).
+This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
+
+## [3001.3.0.1]
+### Changed
+- Bumped doctest to version < 0.12
 
 ## [3001.3.0.0]
 ### Changed
@@ -38,7 +42,9 @@ Applicative parameter to be an instance of Monad
 - GHC 7.8.3 support
 
 [Unreleased]:
-https://github.com/cheecheeo/haskell-cgi/compare/3001.3.0.0...HEAD
+https://github.com/cheecheeo/haskell-cgi/compare/3001.3.0.1...HEAD
+[3001.3.0.1]:
+https://github.com/cheecheeo/haskell-cgi/compare/3001.3.0.0...3001.3.0.1
 [3001.3.0.0]:
 https://github.com/cheecheeo/haskell-cgi/compare/3001.2.2.3...3001.3.0.0
 [3001.2.2.3]:
