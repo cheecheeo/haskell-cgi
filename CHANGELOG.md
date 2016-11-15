@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
+## [3001.3.0.2]
+### Changed
+- Bumped QuickCheck upper bound to version < 2.10
+
 ## [3001.3.0.1]
 ### Changed
 - Bumped doctest to version < 0.12
@@ -42,7 +46,9 @@ Applicative parameter to be an instance of Monad
 - GHC 7.8.3 support
 
 [Unreleased]:
-https://github.com/cheecheeo/haskell-cgi/compare/3001.3.0.1...HEAD
+https://github.com/cheecheeo/haskell-cgi/compare/3001.3.0.2...HEAD
+[3001.3.0.2]:
+https://github.com/cheecheeo/haskell-cgi/compare/3001.3.0.1...3001.3.0.2
 [3001.3.0.1]:
 https://github.com/cheecheeo/haskell-cgi/compare/3001.3.0.0...3001.3.0.1
 [3001.3.0.0]:
