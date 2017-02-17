@@ -64,6 +64,7 @@ module Network.CGI (
   , getInputs, getInputsFPS, getInputNames
   , getMultiInput, getMultiInputFPS
   , getInputFilename, getInputContentType
+  , getMultiInputFilenames, getMultiInputContentTypes
   -- * Environment
   , getVar, getVarWithDefault, getVars
   -- * Request information
@@ -541,6 +542,16 @@ getInputFilename :: MonadCGI m =>
                                      -- input, if there is one.
 getInputFilename = liftM (>>= inputFilename) . getInput_
 
+-- | Get the file names of an input that has the html5 multiple attribute set.
+-- The filenames will be in the same order as the contents provided by
+-- 'getMultiInput', and 'Nothing' when no name is supplied
+getMultiInputFilenames :: MonadCGI m =>
+                          String           -- ^ The name of the variable.
+                          -> m [Maybe String] -- ^ The file names corresponding to the
+                                              -- input, if there are any.
+getMultiInputFilenames n = do is <- cgiGet cgiInputs
+                              return [inputFilename v | (p, v) <- is, p == n]
+
 -- | Get the content-type of an input, if the input exists, e.g. "image\/jpeg".
 --   For non-file inputs, this function returns "text\/plain".
 --   You can use 'parseContentType' to get a structured
@@ -550,6 +561,18 @@ getInputContentType :: MonadCGI m =>
                     -> m (Maybe String) -- ^ The content type, formatted as a string.
 getInputContentType =
     liftM (fmap (showContentType . inputContentType)) . getInput_
+
+-- | Get the content types of an input that has the attribute "multiple"
+-- same as 'getInputContentType' but returns a list of content-types
+-- in the same order as 'getMultiInput'. So zipping together the results of
+-- 'getMultiInputFilenames', 'getMultiInput' and 'getMultiInputContentTypes'
+-- will produce tuples associating filenames with contents and content types.
+getMultiInputContentTypes :: MonadCGI m =>
+                       String   -- ^ The name of the variable.
+                    -> m [String] -- ^ The content type, formatted as a string.
+getMultiInputContentTypes n =
+  do is <- cgiGet cgiInputs
+     return [showContentType $ inputContentType v | (p, v) <- is, p == n]
 
 -- | Same as 'getInput', but tries to read the value to the desired type.
 readInput :: (Read a, MonadCGI m) =>
