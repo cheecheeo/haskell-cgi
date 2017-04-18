@@ -43,6 +43,7 @@ import System.Environment (getEnvironment)
 import System.IO (Handle, hPutStrLn, stderr, hFlush, hSetBinaryMode)
 
 import qualified Data.ByteString.Lazy.Char8 as BS
+import qualified Data.ByteString.Lazy.UTF8 as BU
 import Data.ByteString.Lazy.Char8 (ByteString)
 
 #if MIN_VERSION_base(4,7,0)
@@ -145,7 +146,7 @@ formatResponse :: ByteString -> Headers -> ByteString
 formatResponse c hs =
     -- NOTE: we use CRLF since lighttpd mod_fastcgi can't handle
     -- just LF if there are CRs in the content.
-    unlinesCrLf ([BS.pack (n++": "++v) | (HeaderName n,v) <- hs]
+    unlinesCrLf ([BU.fromString (n++": "++v) | (HeaderName n,v) <- hs]
                 ++ [BS.empty,c])
   where unlinesCrLf = BS.concat . intersperse (BS.pack "\r\n")
 
@@ -170,7 +171,7 @@ decodeInput env inp =
 
 -- | Builds an 'Input' object for a simple value.
 simpleInput :: String -> Input
-simpleInput v = Input { inputValue = BS.pack v,
+simpleInput v = Input { inputValue = BU.fromString v,
                         inputFilename = Nothing,
                         inputContentType = defaultInputType }
 
@@ -207,6 +208,13 @@ queryInput :: [(String,String)] -- ^ CGI environment variables.
 queryInput env = formInput $ lookupOrNil "QUERY_STRING" env
 
 -- | Decodes application\/x-www-form-urlencoded inputs.
+--
+-- Example:
+--
+-- >>> map (\(x,y)->(x,inputValue y)) $ formInput "term=%CE%BBx.x"
+-- [("term","\206\187x.x")]
+--
+-- We can see that the result matches the input.
 formInput :: String
           -> [(String,Input)] -- ^ Input variables and values.
 formInput qs = [(n, simpleInput v) | (n,v) <- formDecode qs]
