@@ -54,7 +54,10 @@ data Cookie = Cookie {
                       cookiePath :: Maybe String,
                       -- | 'True' if this cookie should only be sent using
                       --   secure means.
-                      cookieSecure :: Bool
+                      cookieSecure :: Bool,
+                      -- | 'True' to tell the client's browser to prevent 
+                      --   client side scripts from accessing the cookie.
+                      cookieHttpOnly :: Bool
                      }
             deriving (Show, Read, Eq, Ord)
 
@@ -74,7 +77,8 @@ newCookie name value = Cookie { cookieName = name,
                                 cookieExpires = Nothing,
                                 cookieDomain = Nothing,
                                 cookiePath = Nothing,
-                                cookieSecure = False
+                                cookieSecure = False,
+                                cookieHttpOnly = False
                               }
 
 --
@@ -106,11 +110,12 @@ deleteCookie c = c { cookieExpires = Just epoch }
 showCookie :: Cookie -> String
 showCookie c = concat $ intersperse "; " $
                 showPair (cookieName c) (cookieValue c)
-                 : catMaybes [expires, path, domain, secure]
+                 : catMaybes [expires, path, domain, secure, httpOnly]
     where expires = fmap (showPair "expires" . dateFmt) (cookieExpires c)
           domain = fmap (showPair "domain") (cookieDomain c)
           path = fmap (showPair "path") (cookiePath c)
           secure = if cookieSecure c then Just "secure" else Nothing
+          httpOnly = if cookieHttpOnly c then Just "HttpOnly" else Nothing
           dateFmt = formatTime defaultTimeLocale rfc822DateFormat
 
 -- | Show a name-value pair. FIXME: if the name or value
