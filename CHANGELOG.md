@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
+## [3001.3.0.3]
+### Changed
+- Bumped time upper bound to version < 1.9
+- Bumped QuickCheck upper bound to version < 2.11
+
 ## [3001.3.0.2]
 ### Changed
 - Bumped QuickCheck upper bound to version < 2.10
