@@ -44,11 +44,11 @@ Library
 
   Build-depends:
     parsec >= 2.0 && < 3.2,
-    exceptions < 0.9,
+    exceptions < 1.0,
     xhtml >= 3000.0.0 && < 3000.3,
     bytestring < 0.11,
     base >= 4.5 && < 5,
-    time >= 1.5 && < 1.7,
+    time >= 1.5 && < 2.0,
     containers < 0.6,
     multipart >= 0.1.2 && < 0.2
   If flag(network-uri)
@@ -72,8 +72,8 @@ test-suite doctests
   ghc-options:      -Wall
   build-depends:
       base
-    , doctest >= 0.8 && < 0.12
-    , QuickCheck >= 2.8.1 && < 2.10
+    , doctest >= 0.8 && < 1.0
+    , QuickCheck >= 2.8.1 && < 3.0
 
 --Executable:     printinput
 --Main-Is:        printinput.hs
