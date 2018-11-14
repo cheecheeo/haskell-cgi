@@ -30,8 +30,12 @@ type Quality = Double
 -- A bounded join-semilattice
 class Eq a => Acceptable a where
     includes :: a -> a -> Bool
-    top :: a
+{-  top :: a
 
+    TODO: This method is not exported from his module, so it cannot be used by
+          code on the outside. It is not used inside of this module either. So,
+          do we actually need it?
+-}
 instance HeaderValue a => HeaderValue (Accept a) where
     parseHeaderValue = fmap Accept $ sepBy p (lexeme (char ','))
         where p = do a <- parseHeaderValue
@@ -74,7 +78,7 @@ instance Acceptable ContentType where
     includes x y = ctType x `starOrEqualTo` ctType y
                    && ctSubtype x `starOrEqualTo` ctSubtype y
                    && all (hasParameter y) (ctParameters x)
-    top = ContentType "*" "*" []
+    -- top = ContentType "*" "*" []
 
 hasParameter :: ContentType -> (String, String) -> Bool
 hasParameter t (k,v) = maybe False (==v) $ lookup k (ctParameters t)
@@ -116,7 +120,7 @@ instance HeaderValue Charset where
 
 instance Acceptable Charset where
     Charset x `includes` Charset y = starOrEqualTo x y
-    top = Charset "*"
+    -- top = Charset "*"
 
 --
 -- ** Accept-Encoding
@@ -141,7 +145,7 @@ instance HeaderValue ContentEncoding where
 
 instance Acceptable ContentEncoding where
     ContentEncoding x `includes` ContentEncoding y = starOrEqualTo x y
-    top = ContentEncoding "*"
+    -- top = ContentEncoding "*"
 
 --
 -- ** Accept-Language
@@ -172,4 +176,4 @@ any other range present in the Accept-Language field.
 instance Acceptable Language where
     Language x `includes` Language y =
         x == "*" || x == y || (x `isPrefixOf` y && "-" `isPrefixOf` drop (length x) y)
-    top = Language "*"
+    -- top = Language "*"
