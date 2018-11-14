@@ -1,7 +1,4 @@
 {-# LANGUAGE CPP, DeriveDataTypeable, MultiParamTypeClasses #-}
-#if __GLASGOW_HASKELL__ >= 800
-{-# OPTIONS_GHC -Wno-redundant-constraints #-}
-#endif
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI.Monad
@@ -98,6 +95,10 @@ instance MonadMask m => MonadMask (CGIT m) where
     generalBracket acquire release f = CGIT $
       generalBracket (unCGIT acquire) (\a b -> unCGIT (release a b)) (unCGIT . f)
 
+instance MonadCatch m => MonadError SomeException (CGIT m) where
+    throwError = throwM
+    catchError = catch
+
 -- | The class of CGI monads. Most CGI actions can be run in
 --   any monad which is an instance of this class, which means that
 --   you can use your own monad transformers to add extra functionality.
@@ -121,29 +122,26 @@ runCGIT (CGIT c) = liftM (uncurry (flip (,))) . runWriterT . runReaderT c
 
 
 --
--- * Error handling
+-- * Deprecated error handling functions.
 --
 
-instance MonadCatch m => MonadError SomeException (CGIT m) where
-    throwError = throwM
-    catchError = catch
 
--- | Throw an exception in a CGI monad. The monad is required to be
---   a 'MonadThrow', so that we can use 'throwM' to guarantee ordering.
-throwCGI :: (MonadCGI m, MonadThrow m) => SomeException -> m a
+{-# DEPRECATED throwCGI "Use Control.Monad.Catch.throwM instead." #-}
+-- | Deprecated alias for 'throwM'. Please use 'throwM' instead.
+throwCGI :: (MonadThrow m) => SomeException -> m a
 throwCGI = throwM
 
--- | Catches any expection thrown by a CGI action, and uses the given
---   exception handler if an exception is thrown.
-catchCGI :: (MonadCGI m, MonadCatch m) => m a -> (SomeException -> m a) -> m a
+{-# DEPRECATED catchCGI "Use Control.Monad.Catch.catch instead." #-}
+-- | Deprecated alias for 'catch'. Please use 'catch' instead.
+catchCGI :: (MonadCatch m) => m a -> (SomeException -> m a) -> m a
 catchCGI = catch
 
--- | Catches any exception thrown by an CGI action, and returns either
---   the exception, or if no exception was raised, the result of the action.
-tryCGI :: (Functor m, MonadCGI m, MonadCatch m) => m a -> m (Either SomeException a)
+{-# DEPRECATED tryCGI "Use Control.Monad.Catch.try instead." #-}
+-- | Deprecated alias for 'try'. Please use 'try' instead.
+tryCGI :: (MonadCatch m) => m a -> m (Either SomeException a)
 tryCGI = try
 
-{-# DEPRECATED handleExceptionCGI "Use catchCGI instead." #-}
--- | Deprecated version of 'catchCGI'. Use 'catchCGI' instead.
-handleExceptionCGI :: (MonadCGI m, MonadCatch m) => m a -> (SomeException -> m a) -> m a
-handleExceptionCGI = catchCGI
+{-# DEPRECATED handleExceptionCGI "Use Control.Monad.Catch.catch instead." #-}
+-- | Deprecated alias for 'catch'. Please use 'catch' instead.
+handleExceptionCGI :: (MonadCatch m) => m a -> (SomeException -> m a) -> m a
+handleExceptionCGI = catch
