@@ -43,7 +43,7 @@ envFuns = sequence
         f "queryURI"             queryURI,
         f "requestURI"           requestURI
        ]
-  where f n = fmap (((,) n) . show)
+  where f n = fmap ((,) n . show)
 
 prVars :: [(String, String)] -> String
 prVars vs = unlines [k ++ ": " ++ x | (k,x) <- vs ]

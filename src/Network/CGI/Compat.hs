@@ -59,7 +59,7 @@ pwrapper pid f = do sock <- listenOn pid
 acceptConnections :: (Handle -> IO ()) -> Socket -> IO ()
 acceptConnections fn sock = do
   (h, SockAddrInet _ _) <- accept' sock
-  _ <- forkIO (fn h `finally` (hClose h))
+  _ <- forkIO (fn h `finally` hClose h)
   acceptConnections fn sock
 
 accept' :: Socket                 -- Listening Socket
@@ -86,7 +86,7 @@ connectToCGIScript host portId
           let str = getRequestInput env input
           h <- connectTo host portId
                  `Exception.catch`
-                   (abort "Cannot connect to CGI daemon.")
+                   abort "Cannot connect to CGI daemon."
           BS.hPut h str >> hPutStrLn h ""
           (sendBack h `finally` hClose h)
                `Exception.catch` (\e -> unless (isEOFError e) (ioError e))

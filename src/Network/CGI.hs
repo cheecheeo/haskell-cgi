@@ -459,7 +459,7 @@ queryURI :: MonadCGI m => m URI
 queryURI =
     do uri  <- progURI
        path <- pathInfo
-       qs   <- fmap (\q -> if null q then q else '?':q) $ queryString
+       qs   <- fmap (\q -> if null q then q else '?':q) queryString
        return $ uri { uriPath = uriPath uri ++ escapePath path,
                       uriQuery = qs }
 
