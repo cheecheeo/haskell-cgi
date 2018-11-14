@@ -102,7 +102,6 @@ script:
 
   # build & run tests, build benchmarks
   - cabal new-build -w ${HC} ${TEST} ${BENCH} all
-  - if [ "x$TEST" = "x--enable-tests" ]; then cabal new-test -w ${HC} ${TEST} ${BENCH} all; fi
 
   # doctest
   - if [ $HCNUMVER -ge 80000 ]; then (cd cgi-* && doctest -package=Cabal .); fi
