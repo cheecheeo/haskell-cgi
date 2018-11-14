@@ -59,7 +59,7 @@ type CGI a = CGIT IO a
 -- | The CGIT monad transformer.
 newtype CGIT m a = CGIT { unCGIT :: ReaderT CGIRequest (WriterT Headers m) a }
 #if MIN_VERSION_base(4,7,0)
-			deriving (Typeable)
+                        deriving (Typeable)
 
 #else
 instance (Typeable1 m, Typeable a) => Typeable (CGIT m a) where
