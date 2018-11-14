@@ -4,6 +4,11 @@ This project adheres to the [Package Versioning Policy](https://wiki.haskell.org
 
 ## [3001.3.1.0]
 ### Changed
+- Our error handling functions `throwCGI`, `catchCGI`, `tryCGI`, and
+  `handleExceptionCGI` are deprecated. These functions are trivial aliases for
+  the corresponding functions from the `exceptions` library's `MonadCatch`
+  class. Users should directly use those functions. They are more general and
+  have better documentation.
 
 ## [3001.3.0.3]
 ### Changed
