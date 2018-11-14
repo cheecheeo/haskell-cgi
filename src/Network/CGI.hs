@@ -94,7 +94,6 @@ module Network.CGI (
   ) where
 
 import Control.Exception (Exception(..), SomeException, ErrorCall(..))
-import Control.Monad (liftM)
 import Control.Monad.Catch (MonadCatch(..), handle)
 import Control.Monad.Trans (MonadIO, liftIO)
 import Data.Char (toUpper)
@@ -203,7 +202,7 @@ outputError c m es =
          setStatus c m
          let textType = ContentType "text" "plain" [("charset","ISO-8859-1")]
              htmlType = ContentType "text" "html"  [("charset","ISO-8859-1")]
-         cts <- liftM (negotiate [htmlType,textType]) requestAccept
+         cts <- fmap (negotiate [htmlType,textType]) requestAccept
          case cts of
            ct:_ | ct == textType ->
                 do setHeader "Content-type" (showContentType textType)
@@ -275,18 +274,18 @@ outputInternalServerError es = outputError 500 "Internal Server Error" es
 getVar :: MonadCGI m =>
           String             -- ^ The name of the variable.
        -> m (Maybe String)
-getVar name = liftM (Map.lookup name) $ cgiGet cgiVars
+getVar name = fmap (Map.lookup name) $ cgiGet cgiVars
 
 getVarWithDefault :: MonadCGI m =>
                      String -- ^ The name of the variable.
                   -> String -- ^ Default value
                   -> m String
-getVarWithDefault name def = liftM (fromMaybe def) $ getVar name
+getVarWithDefault name def = fmap (fromMaybe def) $ getVar name
 
 -- | Get all CGI environment variables and their values.
 getVars :: MonadCGI m =>
            m [(String,String)]
-getVars = liftM Map.toList $ cgiGet cgiVars
+getVars = fmap Map.toList $ cgiGet cgiVars
 
 --
 -- * Request information
@@ -299,7 +298,7 @@ serverName = getVarWithDefault "SERVER_NAME" ""
 
 -- | The port number to which the request was sent.
 serverPort :: MonadCGI m => m Int
-serverPort = liftM (fromMaybe 80 . (>>= maybeRead)) (getVar "SERVER_PORT")
+serverPort = fmap (fromMaybe 80 . (>>= maybeRead)) (getVar "SERVER_PORT")
 
 -- |  The method with which the request was made.
 --    For HTTP, this is \"GET\", \"HEAD\", \"POST\", etc.
@@ -319,7 +318,7 @@ requestMethod = getVarWithDefault "REQUEST_METHOD" "GET"
 -- See 'progURI', 'queryURI' and 'requestURI' for a higher-level
 -- interface.
 pathInfo :: MonadCGI m => m String
-pathInfo = liftM slash $ getVarWithDefault "PATH_INFO" ""
+pathInfo = fmap slash $ getVarWithDefault "PATH_INFO" ""
   where slash s = if not (null s) && head s /= '/' then '/':s else s
 
 -- | The path returned by 'pathInfo', but with virtual-to-physical
@@ -377,7 +376,7 @@ requestContentType = getVar "CONTENT_TYPE"
 --   HTTP POST and PUT, this is the length of the content
 --   given by the client.
 requestContentLength :: MonadCGI m => m (Maybe Int)
-requestContentLength = liftM (>>= maybeRead) $ getVar "CONTENT_LENGTH"
+requestContentLength = fmap (>>= maybeRead) $ getVar "CONTENT_LENGTH"
 
 -- | Gets the value of the request header with the given name.
 --   The header name is case-insensitive.
@@ -393,7 +392,7 @@ requestHeader name = getVar var
 --
 
 requestHeaderValue :: (MonadCGI m, HeaderValue a) => String -> m (Maybe a)
-requestHeaderValue h = liftM (>>= parseM parseHeaderValue h) $ requestHeader h
+requestHeaderValue h = fmap (>>= parseM parseHeaderValue h) $ requestHeader h
 
 requestAccept :: MonadCGI m => m (Maybe (Accept ContentType))
 requestAccept = requestHeaderValue "Accept"
@@ -427,7 +426,7 @@ progURI =
        h <- requestHeader "Host" >>= maybe serverName return
        p <- serverPort
        name <- scriptName
-       https <- liftM (maybe False (const True)) (getVar "HTTPS")
+       https <- fmap (maybe False (const True)) (getVar "HTTPS")
        -- SERVER_PORT might not be the port that the client used
        -- if the server listens on multiple ports, so we give priority
        -- to the port in HTTP_HOST.
@@ -460,7 +459,7 @@ queryURI :: MonadCGI m => m URI
 queryURI =
     do uri  <- progURI
        path <- pathInfo
-       qs   <- liftM (\q -> if null q then q else '?':q) $ queryString
+       qs   <- fmap (\q -> if null q then q else '?':q) $ queryString
        return $ uri { uriPath = uriPath uri ++ escapePath path,
                       uriQuery = qs }
 
@@ -482,7 +481,7 @@ requestURI =
     do uri <- queryURI
        -- Apache sets REQUEST_URI to the original request URI,
        -- with percent-encoding intact.
-       mreq <- liftM (>>= parseRelativeReference) $ getVar "REQUEST_URI"
+       mreq <- fmap (>>= parseRelativeReference) $ getVar "REQUEST_URI"
        return $ case mreq of
                  Nothing  -> uri
                  Just req -> uri {
@@ -504,14 +503,14 @@ getInput :: MonadCGI m =>
             String           -- ^ The name of the variable.
          -> m (Maybe String) -- ^ The value of the variable,
                              --   or Nothing, if it was not set.
-getInput = liftM (fmap BS.unpack) . getInputFPS
+getInput = fmap (fmap BS.unpack) . getInputFPS
 
 -- | Like 'getInput', but returns a 'ByteString'.
 getInputFPS :: MonadCGI m =>
             String           -- ^ The name of the variable.
          -> m (Maybe ByteString) -- ^ The value of the variable,
                              --   or Nothing, if it was not set.
-getInputFPS = liftM (fmap inputValue) . getInput_
+getInputFPS = fmap (fmap inputValue) . getInput_
 
 -- | Get all the values of an input variable, for example from a form.
 -- This can be used to get all the values from form controls
@@ -523,7 +522,7 @@ getMultiInput :: MonadCGI m =>
                  String -- ^ The name of the variable.
               -> m [String] -- ^ The values of the variable,
                             -- or the empty list if the variable was not set.
-getMultiInput = liftM (map BS.unpack) . getMultiInputFPS
+getMultiInput = fmap (map BS.unpack) . getMultiInputFPS
 
 -- | Same as 'getMultiInput' but using 'ByteString's.
 getMultiInputFPS :: MonadCGI m =>
@@ -538,7 +537,7 @@ getInputFilename :: MonadCGI m =>
                     String           -- ^ The name of the variable.
                  -> m (Maybe String) -- ^ The file name corresponding to the
                                      -- input, if there is one.
-getInputFilename = liftM (>>= inputFilename) . getInput_
+getInputFilename = fmap (>>= inputFilename) . getInput_
 
 -- | Get the content-type of an input, if the input exists, e.g. "image\/jpeg".
 --   For non-file inputs, this function returns "text\/plain".
@@ -548,7 +547,7 @@ getInputContentType :: MonadCGI m =>
                        String   -- ^ The name of the variable.
                     -> m (Maybe String) -- ^ The content type, formatted as a string.
 getInputContentType =
-    liftM (fmap (showContentType . inputContentType)) . getInput_
+    fmap (fmap (showContentType . inputContentType)) . getInput_
 
 -- | Same as 'getInput', but tries to read the value to the desired type.
 readInput :: (Read a, MonadCGI m) =>
@@ -556,7 +555,7 @@ readInput :: (Read a, MonadCGI m) =>
           -> m (Maybe a) -- ^ 'Nothing' if the variable does not exist
                            --   or if the value could not be interpreted
                            --   at the desired type.
-readInput = liftM (>>= maybeRead) . getInput
+readInput = fmap (>>= maybeRead) . getInput
 
 -- | Get the names and values of all inputs.
 --   Note: the same name may occur more than once in the output,
@@ -574,17 +573,17 @@ getInputsFPS = do is <- cgiGet cgiInputs
 
 -- | Get the names of all input variables.
 getInputNames :: MonadCGI m => m [String]
-getInputNames = (sortNub . map fst) `liftM` cgiGet cgiInputs
+getInputNames = (sortNub . map fst) `fmap` cgiGet cgiInputs
     where sortNub = map head . group . sort
 
 -- Internal stuff
 
 getInput_ ::  MonadCGI m => String -> m (Maybe Input)
-getInput_ n = lookup n `liftM` cgiGet cgiInputs
+getInput_ n = lookup n `fmap` cgiGet cgiInputs
 
 -- | Get the uninterpreted request body as a String
 getBody :: MonadCGI m => m String
-getBody = BS.unpack `liftM` cgiGet cgiRequestBody
+getBody = BS.unpack `fmap` cgiGet cgiRequestBody
 
 -- | Get the uninterpreted request body as lazy ByteString
 getBodyFPS :: MonadCGI m => m ByteString
@@ -598,7 +597,7 @@ getBodyFPS = cgiGet cgiRequestBody
 getCookie :: MonadCGI m =>
              String           -- ^ The name of the cookie.
           -> m (Maybe String) -- ^ 'Nothing' if the cookie does not exist.
-getCookie name = liftM (>>= findCookie name) (getVar "HTTP_COOKIE")
+getCookie name = fmap (>>= findCookie name) (getVar "HTTP_COOKIE")
 
 -- | Same as 'getCookie', but tries to read the value to the desired type.
 readCookie :: (Read a, MonadCGI m) =>
@@ -606,7 +605,7 @@ readCookie :: (Read a, MonadCGI m) =>
             -> m (Maybe a) -- ^ 'Nothing' if the cookie does not exist
                            --   or if the value could not be interpreted
                            --   at the desired type.
-readCookie = liftM (>>= maybeRead) . getCookie
+readCookie = fmap (>>= maybeRead) . getCookie
 
 -- | Set a cookie.
 setCookie :: MonadCGI m => Cookie -> m ()
@@ -637,4 +636,3 @@ setStatus :: MonadCGI m =>
           -> String -- ^ HTTP status message, e.g. @"Not Found"@
           -> m ()
 setStatus c m = setHeader "Status" (show c ++ " " ++ m)
-

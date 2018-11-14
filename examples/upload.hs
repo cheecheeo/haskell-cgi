@@ -2,7 +2,6 @@
 -- WARNING: this script is a SECURITY RISK and only for
 -- demo purposes. Do not put it on a public web server.
 
-import Control.Monad (liftM)
 import Data.Maybe (fromJust)
 
 import qualified Data.ByteString.Lazy as BS (writeFile)
@@ -17,7 +16,7 @@ dir = "../upload"
 
 saveFile :: (MonadCGI m, MonadIO m) => String -> m Html
 saveFile n =
-    do cont <- liftM fromJust $ getInputFPS "file"
+    do cont <- fmap fromJust $ getInputFPS "file"
        let p = dir ++ "/" ++ basename n
        liftIO $ BS.writeFile p cont
        return $ paragraph << ("Saved as " +++ anchor ! [href p] << p +++ ".")

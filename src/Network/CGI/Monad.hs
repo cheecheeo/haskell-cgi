@@ -33,7 +33,6 @@ import Prelude hiding (catch)
 
 import Control.Exception as Exception (SomeException)
 import Control.Applicative (Applicative(..))
-import Control.Monad (liftM)
 import Control.Monad.Catch (MonadCatch, MonadThrow, MonadMask, throwM, catch, try, mask, uninterruptibleMask, generalBracket)
 import Control.Monad.Except (MonadError(..))
 import Control.Monad.Reader (ReaderT(..), asks)
@@ -117,7 +116,7 @@ instance MonadTrans CGIT where
 
 -- | Run a CGI action.
 runCGIT :: Monad m => CGIT m a -> CGIRequest -> m (Headers, a)
-runCGIT (CGIT c) = liftM (uncurry (flip (,))) . runWriterT . runReaderT c
+runCGIT (CGIT c) = fmap (uncurry (flip (,))) . runWriterT . runReaderT c
 
 
 
