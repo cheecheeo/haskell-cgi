@@ -83,7 +83,7 @@ instance MonadIO m => MonadIO (CGIT m) where
     liftIO = lift . liftIO
 
 instance MonadThrow m => MonadThrow (CGIT m) where
-    throwM e = CGIT . throwM $ e
+    throwM = CGIT . throwM
 
 instance MonadCatch m => MonadCatch (CGIT m) where
     CGIT m `catch` h = CGIT $ m `catch` (unCGIT . h)

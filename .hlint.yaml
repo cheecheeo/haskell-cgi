@@ -1,6 +1,5 @@
 # .hlint.yaml
 
-- ignore: {name: Eta reduce}
 - ignore: {name: Redundant $}
 - ignore: {name: Redundant bracket}
 - ignore: {name: Unused LANGUAGE pragma}

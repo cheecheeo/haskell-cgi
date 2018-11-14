@@ -261,7 +261,7 @@ outputMethodNotAllowed ms =
 outputInternalServerError :: (MonadIO m, MonadCGI m) =>
                              [String] -- ^ Error information.
                           -> m CGIResult
-outputInternalServerError es = outputError 500 "Internal Server Error" es
+outputInternalServerError = outputError 500 "Internal Server Error"
 
 
 --
@@ -628,7 +628,7 @@ setHeader :: MonadCGI m =>
              String -- ^ Header name.
           -> String -- ^ Header value.
           -> m ()
-setHeader n v = cgiAddHeader (HeaderName n) v
+setHeader n = cgiAddHeader (HeaderName n)
 
 -- | Set the HTTP response status.
 setStatus :: MonadCGI m =>
