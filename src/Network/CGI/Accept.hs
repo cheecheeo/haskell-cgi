@@ -75,7 +75,7 @@ instance Acceptable ContentType where
                    && all (hasParameter y) (ctParameters x)
 
 hasParameter :: ContentType -> (String, String) -> Bool
-hasParameter t (k,v) = maybe False (==v) $ lookup k (ctParameters t)
+hasParameter t (k,v) = (== Just v) $ lookup k (ctParameters t)
 
 --
 -- ** Accept-Charset

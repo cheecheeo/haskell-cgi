@@ -98,7 +98,7 @@ import Control.Monad.Catch (MonadCatch(..), handle)
 import Control.Monad.Trans (MonadIO, liftIO)
 import Data.Char (toUpper)
 import Data.List (intercalate, sort, group)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, isJust)
 import qualified Data.Map as Map
 import Network.Multipart
 import Network.Multipart.Header
@@ -426,7 +426,7 @@ progURI =
        h <- requestHeader "Host" >>= maybe serverName return
        p <- serverPort
        name <- scriptName
-       https <- fmap (maybe False (const True)) (getVar "HTTPS")
+       https <- fmap isJust (getVar "HTTPS")
        -- SERVER_PORT might not be the port that the client used
        -- if the server listens on multiple ports, so we give priority
        -- to the port in HTTP_HOST.
