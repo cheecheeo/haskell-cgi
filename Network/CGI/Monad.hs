@@ -1,4 +1,7 @@
 {-# LANGUAGE CPP, DeriveDataTypeable, MultiParamTypeClasses #-}
+#if __GLASGOW_HASKELL__ >= 800
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+#endif
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI.Monad
