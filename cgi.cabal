@@ -1,9 +1,9 @@
 Name: cgi
 Version: 3001.3.1.0
 Copyright: Bjorn Bringert, John Chee, Andy Gill, Anders Kaseorg,
-           Ian Lynagh, Erik Meijer, Sven Panne, Jeremy Shaw
+           Ian Lynagh, Erik Meijer, Sven Panne, Jeremy Shaw, Peter Simons
 Category: Network
-Maintainer: John Chee <cheecheeo@gmail.com>
+Maintainer: John Chee <cheecheeo@gmail.com>, Peter Simons <simons@cryp.to>
 Author: Bjorn Bringert
 Homepage: https://github.com/cheecheeo/haskell-cgi
 bug-reports: https://github.com/cheecheeo/haskell-cgi/issues
