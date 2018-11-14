@@ -15,7 +15,7 @@ prInput :: String -> CGI String
 prInput i =
     do
     vs <- getMultiInput i
-    let v = concat $ intersperse "," $ map show vs
+    let v = intercalate "," $ map show vs
     f <- getInputFilename i
     return $ case f of
            Just n -> i ++ ": File\nfilename=" ++ n

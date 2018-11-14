@@ -97,7 +97,7 @@ import Control.Exception (Exception(..), SomeException, ErrorCall(..))
 import Control.Monad.Catch (MonadCatch(..), handle)
 import Control.Monad.Trans (MonadIO, liftIO)
 import Data.Char (toUpper)
-import Data.List (intersperse, sort, group)
+import Data.List (intercalate, sort, group)
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as Map
 import Network.Multipart
@@ -253,7 +253,7 @@ outputMethodNotAllowed :: (MonadIO m, MonadCGI m) =>
                           [String] -- ^ The allowed methods.
                        -> m CGIResult
 outputMethodNotAllowed ms =
-    do let allow = concat $ intersperse ", " ms
+    do let allow = intercalate ", " ms
        setHeader "Allow" allow
        outputError 405 "Method Not Allowed" ["Allowed methods : " ++ allow]
 

@@ -27,7 +27,7 @@ module Network.CGI.Cookie (
                            ) where
 
 import Data.Char (isSpace)
-import Data.List (intersperse)
+import Data.List (intercalate)
 import Data.Maybe (catMaybes)
 import Data.Time.Calendar (Day(..))
 import Data.Time.Clock (UTCTime(..))
@@ -104,7 +104,7 @@ deleteCookie c = c { cookieExpires = Just epoch }
 
 -- | Show a cookie on the format used as the value of the Set-Cookie header.
 showCookie :: Cookie -> String
-showCookie c = concat $ intersperse "; " $
+showCookie c = intercalate "; " $
                 showPair (cookieName c) (cookieValue c)
                  : catMaybes [expires, path, domain, secure]
     where expires = fmap (showPair "expires" . dateFmt) (cookieExpires c)
