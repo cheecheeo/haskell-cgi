@@ -13,8 +13,9 @@ Synopsis: A library for writing CGI programs
 Description:
  This is a Haskell library for writing CGI programs.
 Build-Type: Simple
-extra-source-files: CHANGELOG.md
+extra-source-files: CHANGELOG.md, .hlint.yaml
 Cabal-Version: >=1.8
+tested-with: GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.2
 
 source-repository head
   type: git
