@@ -9,6 +9,7 @@ This project adheres to the [Package Versioning Policy](https://wiki.haskell.org
   the corresponding functions from the `exceptions` library's `MonadCatch`
   class. Users should directly use those functions. They are more general and
   have better documentation.
+- Relax version constraints to allow building with network 2.8.x.
 
 ## [3001.3.0.3]
 ### Changed
