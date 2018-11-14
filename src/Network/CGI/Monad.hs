@@ -1,4 +1,4 @@
-{-# LANGUAGE CPP, DeriveDataTypeable, MultiParamTypeClasses #-}
+{-# LANGUAGE CPP, MultiParamTypeClasses #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI.Monad

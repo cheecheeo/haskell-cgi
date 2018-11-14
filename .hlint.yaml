@@ -1,5 +1,3 @@
 # .hlint.yaml
 
-- ignore: {name: Unused LANGUAGE pragma}
 - ignore: {name: Use <$>}
-- ignore: {name: Use LANGUAGE pragmas}

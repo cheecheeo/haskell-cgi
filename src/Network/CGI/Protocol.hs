@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI.Protocol
@@ -11,7 +12,7 @@
 -- An implementation of the program side of the CGI protocol.
 --
 -----------------------------------------------------------------------------
-{-# LANGUAGE CPP, DeriveDataTypeable #-}
+
 module Network.CGI.Protocol (
   -- * CGI request
   CGIRequest(..), Input(..),

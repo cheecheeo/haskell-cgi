@@ -8,7 +8,7 @@ import Network.CGI
    , requestHeader, progURI, queryURI, requestURI, getVars, getInputNames
    )
 
-import Data.List (intersperse)
+import Data.List (intercalate)
 
 
 prInput :: String -> CGI String
