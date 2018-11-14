@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
+## [3001.3.1.0]
+### Changed
+
 ## [3001.3.0.3]
 ### Changed
 - Bumped upper version bounds for containers and time.
