@@ -32,7 +32,7 @@ import Prelude hiding (catch)
 import Control.Exception as Exception (SomeException)
 import Control.Applicative (Applicative(..))
 import Control.Monad (liftM)
-import Control.Monad.Catch (MonadCatch, MonadThrow, MonadMask, throwM, catch, try, mask, uninterruptibleMask)
+import Control.Monad.Catch (MonadCatch, MonadThrow, MonadMask, throwM, catch, try, mask, uninterruptibleMask, generalBracket)
 import Control.Monad.Except (MonadError(..))
 import Control.Monad.Reader (ReaderT(..), asks)
 import Control.Monad.Writer (WriterT(..), tell)
@@ -90,6 +90,8 @@ instance MonadCatch m => MonadCatch (CGIT m) where
 instance MonadMask m => MonadMask (CGIT m) where
     mask a = CGIT $ mask $ \u -> unCGIT $ a $ CGIT . u . unCGIT
     uninterruptibleMask a = CGIT $ uninterruptibleMask $ \u -> unCGIT $ a $ CGIT . u . unCGIT
+    generalBracket acquire release f = CGIT $
+      generalBracket (unCGIT acquire) (\a b -> unCGIT (release a b)) (unCGIT . f)
 
 -- | The class of CGI monads. Most CGI actions can be run in
 --   any monad which is an instance of this class, which means that
