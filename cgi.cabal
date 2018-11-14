@@ -1,77 +1,128 @@
-Name: cgi
-Version: 3001.3.1.0
-Copyright: Bjorn Bringert, John Chee, Andy Gill, Anders Kaseorg,
-           Ian Lynagh, Erik Meijer, Sven Panne, Jeremy Shaw, Peter Simons
-Category: Network
-Maintainer: John Chee <cheecheeo@gmail.com>, Peter Simons <simons@cryp.to>
-Author: Bjorn Bringert
-Homepage: https://github.com/cheecheeo/haskell-cgi
-bug-reports: https://github.com/cheecheeo/haskell-cgi/issues
-License: BSD3
-License-file: LICENSE
-Synopsis: A library for writing CGI programs
-Description:
- This is a Haskell library for writing CGI programs.
-Build-Type: Simple
-extra-source-files: README.md, CHANGELOG.md, .hlint.yaml
-Cabal-Version: >=1.8
-tested-with: GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.2
+name:               cgi
+version:            3001.3.0.3
+synopsis:           A library for writing CGI programs
+description:        This is a Haskell library for writing CGI programs.
+license:            BSD3
+license-file:       LICENSE
+copyright:          Bjorn Bringert, John Chee, Andy Gill, Anders Kaseorg,
+                    Ian Lynagh, Erik Meijer, Sven Panne, Jeremy Shaw, Peter Simons
+author:             Bjorn Bringert
+maintainer:         John Chee <cheecheeo@gmail.com>, Peter Simons <simons@cryp.to>
+tested-with:        GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.2
+category:           Network
+homepage:           https://github.com/cheecheeo/haskell-cgi
+bug-reports:        https://github.com/cheecheeo/haskell-cgi/issues
+build-type:         Simple
+extra-source-files: README.md
+                    CHANGELOG.md
+                    .hlint.yaml
+cabal-version:      >= 1.8
 
 source-repository head
-  type: git
+  type:     git
   location: git://github.com/cheecheeo/haskell-cgi.git
 
-Flag network-uri
-  description: Get Network.URI from the network-uri package
-  default: True
+flag install-examples
+  default:     False
+  description: compile (and install) the example programs
 
-Flag old-mtl
-  description: Use mtl-compat and mtl < 2.2.0.1
-  default: False
+flag network-uri
+  default:     True
+  description: get Network.URI from the network-uri package
 
-Library
-  Exposed-Modules:
-    Network.CGI,
-    Network.CGI.Monad,
-    Network.CGI.Protocol,
-    Network.CGI.Cookie,
-    Network.CGI.Compat
-  Other-modules:
-    Network.CGI.Accept
-  Extensions:
-    CPP,
-    MultiParamTypeClasses
-  ghc-options: -Wall
+flag old-mtl
+  default:     False
+  description: use mtl-compat and mtl \< 2.2.0.1
 
-  Build-depends:
-    parsec >= 2.0 && < 3.2,
-    exceptions >= 0.10 && < 0.11,
-    xhtml >= 3000.0.0 && < 3000.3,
-    bytestring < 0.11,
-    base >= 4.5 && < 5,
-    time >= 1.5 && < 1.10,
-    containers < 0.7,
-    multipart >= 0.1.2 && < 0.2
-  If flag(network-uri)
-    Build-depends: network-uri == 2.6.*, network >= 2.6 && < 2.9
-  Else
-    Build-depends: network < 2.6
-  If flag(old-mtl)
-    Build-depends:
-      mtl >= 2.1.3.1 && <= 2.2.0.1, mtl-compat >= 0.2.1.1 && < 0.3
-  Else
-    Build-depends:
-      mtl > 2.2.0.1 && < 2.3
+library
+  exposed-modules: Network.CGI
+                   Network.CGI.Compat
+                   Network.CGI.Cookie
+                   Network.CGI.Monad
+                   Network.CGI.Protocol
+  other-modules:   Network.CGI.Accept
+  hs-source-dirs:  src
+  build-depends:   base       >= 4.5 && < 5
+                 , bytestring < 0.11
+                 , containers < 0.7
+                 , exceptions == 0.10.*
+                 , multipart  >= 0.1.2 && < 0.2
+                 , parsec     >= 2.0 && < 3.2
+                 , time       >= 1.5 && < 1.10
+                 , xhtml      >= 3000.0.0 && < 3000.3
+  extensions:      MultiParamTypeClasses
+                   CPP
+  ghc-options:     -Wall
 
---Executable:     printinput
---Main-Is:        printinput.hs
---Hs-Source-Dir:  examples
+  if flag(network-uri)
+    build-depends: network >= 2.6 && < 2.9, network-uri == 2.6.*
+  else
+    build-depends: network < 2.6
 
---Executable:     redirect
---Main-Is:        redirect.hs
---Hs-Source-Dir:  examples
+  if flag(old-mtl)
+    build-depends: mtl >= 2.1.3.1 && <= 2.2.0.1, mtl-compat >= 0.2.1.1 && < 0.3
+  else
+    build-depends: mtl > 2.2.0.1 && < 2.3
 
---Executable:     upload
---Main-Is:        upload.hs
---Hs-Source-Dir:  examples
+executable cookie.cgi
+  main-is:        cookie.hs
+  hs-source-dirs: examples
 
+  if flag(install-examples)
+    build-depends: base, cgi, xhtml
+  else
+    buildable: False
+
+executable error.cgi
+  main-is:        error.hs
+  hs-source-dirs: examples
+
+  if flag(install-examples)
+    build-depends: base, cgi, xhtml
+  else
+    buildable: False
+
+executable hello.cgi
+  main-is:        hello.hs
+  hs-source-dirs: examples
+
+  if flag(install-examples)
+    build-depends: base, cgi, xhtml
+  else
+    buildable: False
+
+executable printinput.cgi
+  main-is:        printinput.hs
+  hs-source-dirs: examples
+
+  if flag(install-examples)
+    build-depends: base, cgi, xhtml
+  else
+    buildable: False
+
+executable redirect.cgi
+  main-is:        redirect.hs
+  hs-source-dirs: examples
+
+  if flag(install-examples)
+    build-depends: base, cgi, xhtml
+  else
+    buildable: False
+
+executable showAllInputs.cgi
+  main-is:        showAllInputs.hs
+  hs-source-dirs: examples
+
+  if flag(install-examples)
+    build-depends: base, cgi, xhtml
+  else
+    buildable: False
+
+executable upload.cgi
+  main-is:        upload.hs
+  hs-source-dirs: examples
+
+  if flag(install-examples)
+    build-depends: base, bytestring, cgi, xhtml
+  else
+    buildable: False
