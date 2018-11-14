@@ -27,7 +27,10 @@ module Network.CGI.Monad (
   throwCGI, catchCGI, tryCGI, handleExceptionCGI,
  ) where
 
+#if !MIN_VERSION_base(4,6,0)
 import Prelude hiding (catch)
+#endif
+
 import Control.Exception as Exception (SomeException)
 import Control.Applicative (Applicative(..))
 import Control.Monad (liftM)
