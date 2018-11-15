@@ -1,0 +1,5 @@
+# ignore generated files from cabal-install
+
+/.*.environment.*
+/dist-newstyle/*
+/dist/*
