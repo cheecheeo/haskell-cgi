@@ -15,7 +15,6 @@ bug-reports:        https://github.com/cheecheeo/haskell-cgi/issues
 build-type:         Simple
 extra-source-files: README.md
                     CHANGELOG.md
-                    .hlint.yaml
 cabal-version:      >= 1.8
 
 source-repository head

@@ -274,18 +274,18 @@ outputInternalServerError = outputError 500 "Internal Server Error"
 getVar :: MonadCGI m =>
           String             -- ^ The name of the variable.
        -> m (Maybe String)
-getVar name = fmap (Map.lookup name) $ cgiGet cgiVars
+getVar name = Map.lookup name <$> cgiGet cgiVars
 
 getVarWithDefault :: MonadCGI m =>
                      String -- ^ The name of the variable.
                   -> String -- ^ Default value
                   -> m String
-getVarWithDefault name def = fmap (fromMaybe def) $ getVar name
+getVarWithDefault name def = fromMaybe def <$> getVar name
 
 -- | Get all CGI environment variables and their values.
 getVars :: MonadCGI m =>
            m [(String,String)]
-getVars = fmap Map.toList $ cgiGet cgiVars
+getVars = Map.toList <$> cgiGet cgiVars
 
 --
 -- * Request information
@@ -318,7 +318,7 @@ requestMethod = getVarWithDefault "REQUEST_METHOD" "GET"
 -- See 'progURI', 'queryURI' and 'requestURI' for a higher-level
 -- interface.
 pathInfo :: MonadCGI m => m String
-pathInfo = fmap slash $ getVarWithDefault "PATH_INFO" ""
+pathInfo = slash <$> getVarWithDefault "PATH_INFO" ""
   where slash s = if not (null s) && head s /= '/' then '/':s else s
 
 -- | The path returned by 'pathInfo', but with virtual-to-physical
@@ -376,7 +376,7 @@ requestContentType = getVar "CONTENT_TYPE"
 --   HTTP POST and PUT, this is the length of the content
 --   given by the client.
 requestContentLength :: MonadCGI m => m (Maybe Int)
-requestContentLength = fmap (>>= maybeRead) $ getVar "CONTENT_LENGTH"
+requestContentLength = (>>= maybeRead) <$> getVar "CONTENT_LENGTH"
 
 -- | Gets the value of the request header with the given name.
 --   The header name is case-insensitive.
@@ -392,7 +392,7 @@ requestHeader name = getVar var
 --
 
 requestHeaderValue :: (MonadCGI m, HeaderValue a) => String -> m (Maybe a)
-requestHeaderValue h = fmap (>>= parseM parseHeaderValue h) $ requestHeader h
+requestHeaderValue h = (>>= parseM parseHeaderValue h) <$> requestHeader h
 
 requestAccept :: MonadCGI m => m (Maybe (Accept ContentType))
 requestAccept = requestHeaderValue "Accept"
@@ -481,7 +481,7 @@ requestURI =
     do uri <- queryURI
        -- Apache sets REQUEST_URI to the original request URI,
        -- with percent-encoding intact.
-       mreq <- fmap (>>= parseRelativeReference) $ getVar "REQUEST_URI"
+       mreq <- (>>= parseRelativeReference) <$> getVar "REQUEST_URI"
        return $ case mreq of
                  Nothing  -> uri
                  Just req -> uri {

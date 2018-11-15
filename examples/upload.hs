@@ -16,7 +16,7 @@ dir = "../upload"
 
 saveFile :: (MonadCGI m, MonadIO m) => String -> m Html
 saveFile n =
-    do cont <- fmap fromJust $ getInputFPS "file"
+    do cont <- fromJust <$> getInputFPS "file"
        let p = dir ++ "/" ++ basename n
        liftIO $ BS.writeFile p cont
        return $ paragraph << ("Saved as " +++ anchor ! [href p] << p +++ ".")

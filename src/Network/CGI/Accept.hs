@@ -32,7 +32,7 @@ class Eq a => Acceptable a where
     includes :: a -> a -> Bool
 
 instance HeaderValue a => HeaderValue (Accept a) where
-    parseHeaderValue = fmap Accept $ sepBy p (lexeme (char ','))
+    parseHeaderValue = Accept <$> sepBy p (lexeme (char ','))
         where p = do a <- parseHeaderValue
                      q <- option 1 $ do _ <- lexeme $ char ';'
                                         _ <- lexeme $ char 'q'
