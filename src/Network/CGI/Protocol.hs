@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI.Protocol
@@ -11,7 +12,7 @@
 -- An implementation of the program side of the CGI protocol.
 --
 -----------------------------------------------------------------------------
-{-# LANGUAGE CPP, DeriveDataTypeable #-}
+
 module Network.CGI.Protocol (
   -- * CGI request
   CGIRequest(..), Input(..),
@@ -34,7 +35,7 @@ module Network.CGI.Protocol (
 
 import Control.Monad.Trans (MonadIO(..))
 import Data.Char (chr, isHexDigit, digitToInt)
-import Data.List (intersperse)
+import Data.List (intercalate)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import Data.Maybe (fromMaybe, listToMaybe, isJust)
@@ -147,7 +148,7 @@ formatResponse c hs =
     -- just LF if there are CRs in the content.
     unlinesCrLf ([BS.pack (n++": "++v) | (HeaderName n,v) <- hs]
                 ++ [BS.empty,c])
-  where unlinesCrLf = BS.concat . intersperse (BS.pack "\r\n")
+  where unlinesCrLf = BS.intercalate (BS.pack "\r\n")
 
 defaultContentType :: String
 defaultContentType = "text/html; charset=ISO-8859-1"
@@ -218,7 +219,7 @@ formInput qs = [(n, simpleInput v) | (n,v) <- formDecode qs]
 -- | Formats name-value pairs as application\/x-www-form-urlencoded.
 formEncode :: [(String,String)] -> String
 formEncode xs =
-    concat $ intersperse "&" [urlEncode n ++ "=" ++ urlEncode v | (n,v) <- xs]
+    intercalate "&" [urlEncode n ++ "=" ++ urlEncode v | (n,v) <- xs]
 
 -- | Converts a single value to the application\/x-www-form-urlencoded encoding.
 urlEncode :: String -> String

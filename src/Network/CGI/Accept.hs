@@ -41,7 +41,7 @@ instance HeaderValue a => HeaderValue (Accept a) where
                      return (a,q)
               pQuality = (char '0' >> option "0" (char '.' >> many digit) >>= \ds -> return (read ("0." ++ ds ++ "0")))
                          <|> (char '1' >> optional (char '.' >> many (char '0')) >> return 1)
-    prettyHeaderValue (Accept xs) = concat $ intersperse ", " [prettyHeaderValue a ++ "; q=" ++ showQuality q | (a,q) <- xs]
+    prettyHeaderValue (Accept xs) = intercalate ", " [prettyHeaderValue a ++ "; q=" ++ showQuality q | (a,q) <- xs]
         where showQuality q = showFFloat (Just 3) q ""
 
 starOrEqualTo :: String -> String -> Bool
@@ -75,7 +75,7 @@ instance Acceptable ContentType where
                    && all (hasParameter y) (ctParameters x)
 
 hasParameter :: ContentType -> (String, String) -> Bool
-hasParameter t (k,v) = maybe False (==v) $ lookup k (ctParameters t)
+hasParameter t (k,v) = (== Just v) $ lookup k (ctParameters t)
 
 --
 -- ** Accept-Charset

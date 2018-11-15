@@ -1,14 +1,3 @@
 # .hlint.yaml
 
-- ignore: {name: Avoid lambda}
-- ignore: {name: Eta reduce}
-- ignore: {name: Redundant $}
-- ignore: {name: Redundant bracket}
-- ignore: {name: Unused LANGUAGE pragma}
 - ignore: {name: Use <$>}
-- ignore: {name: Use fmap}
-- ignore: {name: Use intercalate}
-- ignore: {name: Use isJust}
-- ignore: {name: Use Just}
-- ignore: {name: Use LANGUAGE pragmas}
-- ignore: {name: Wta reduce}

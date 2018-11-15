@@ -8,15 +8,14 @@ import Network.CGI
    , requestHeader, progURI, queryURI, requestURI, getVars, getInputNames
    )
 
-import Control.Monad (liftM)
-import Data.List (intersperse)
+import Data.List (intercalate)
 
 
 prInput :: String -> CGI String
 prInput i =
     do
     vs <- getMultiInput i
-    let v = concat $ intersperse "," $ map show vs
+    let v = intercalate "," $ map show vs
     f <- getInputFilename i
     return $ case f of
            Just n -> i ++ ": File\nfilename=" ++ n
@@ -27,7 +26,7 @@ envFuns :: CGI [(String, String)]
 envFuns = sequence
        [
         f "serverName"           serverName,
-        f "serverPort"           (liftM show serverPort),
+        f "serverPort"           (fmap show serverPort),
         f "requestMethod"        requestMethod,
         f "pathInfo"             pathInfo,
         f "pathTranslated"       pathTranslated,
@@ -44,7 +43,7 @@ envFuns = sequence
         f "queryURI"             queryURI,
         f "requestURI"           requestURI
        ]
-  where f n = liftM (((,) n) . show)
+  where f n = fmap ((,) n . show)
 
 prVars :: [(String, String)] -> String
 prVars vs = unlines [k ++ ": " ++ x | (k,x) <- vs ]
