@@ -13,7 +13,7 @@ import Data.List (intersperse)
 
 
 prInput :: String -> CGI String
-prInput i = 
+prInput i =
     do
     vs <- getMultiInput i
     let v = concat $ intersperse "," $ map show vs
@@ -23,8 +23,8 @@ prInput i =
                      ++ "\ncontents=" ++ v
            Nothing -> i ++ ": " ++ v
 
-
-envFuns = sequence 
+envFuns :: CGI [(String, String)]
+envFuns = sequence
        [
         f "serverName"           serverName,
         f "serverPort"           (liftM show serverPort),
@@ -46,7 +46,7 @@ envFuns = sequence
        ]
   where f n = liftM (((,) n) . show)
 
-
+prVars :: [(String, String)] -> String
 prVars vs = unlines [k ++ ": " ++ x | (k,x) <- vs ]
 
 cgiMain :: CGI CGIResult
@@ -59,4 +59,5 @@ cgiMain = do fs <- envFuns
                      ++ "\nCGI Environment Variables:\n" ++ prVars vs
                      ++ "\nInputs:\n" ++ unlines i)
 
+main :: IO ()
 main = runCGI cgiMain
