@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI.Protocol
@@ -46,12 +45,7 @@ import System.IO (Handle, hPutStrLn, stderr, hFlush, hSetBinaryMode)
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.ByteString.Lazy.Char8 (ByteString)
 
-#if MIN_VERSION_base(4,7,0)
 import Data.Typeable
-#else
-import Data.Typeable (Typeable(..), mkTyConApp, mkTyCon)
-#endif
-
 import Network.Multipart
 
 
@@ -77,11 +71,6 @@ data CGIRequest =
                }
     deriving (Show)
 
-#if ! MIN_VERSION_base(4,7,0)
-instance Typeable CGIResult where
-    typeOf _ = mkTyConApp (mkTyCon "Network.CGI.Protocol.CGIResult") []
-#endif
-
 -- | The value of an input parameter, and some metadata.
 data Input = Input {
                     inputValue :: ByteString,
@@ -97,11 +86,7 @@ data Input = Input {
 -- | The result of a CGI program.
 data CGIResult = CGIOutput ByteString
                | CGINothing
-#if MIN_VERSION_base(4,7,0)
                  deriving (Show, Read, Eq, Ord, Typeable)
-#else
-                 deriving (Show, Read, Eq, Ord)
-#endif
 
 --
 -- * Running CGI actions

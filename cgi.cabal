@@ -42,7 +42,7 @@ library
                     Network.CGI.Protocol
   other-modules:    Network.CGI.Accept
   hs-source-dirs:   src
-  build-depends:    base       >= 4.5 && < 5
+  build-depends:    base       >= 4.7 && < 5
                   , bytestring < 0.11
                   , containers < 0.7
                   , exceptions == 0.10.*
@@ -51,7 +51,6 @@ library
                   , time       >= 1.5 && < 1.10
                   , xhtml      >= 3000.0.0 && < 3000.3
   other-extensions: MultiParamTypeClasses
-                    CPP
   ghc-options:      -Wall
 
   if flag(network-uri)
