@@ -1,5 +1,0 @@
-Installation with Cabal:
-
-$ runghc Setup.hs configure
-$ runghc Setup.hs build
-$ runghc Setup.hs install
