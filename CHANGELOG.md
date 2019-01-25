@@ -6,9 +6,14 @@ This project adheres to the [Package Versioning Policy](https://wiki.haskell.org
 - Drop obsolete Network.CGI.Compat module. The code in that module relied on
   obsolete functions and types from `network` which have been dropped there in
   the latest 3.x release. Re-writing the Compat module to use the new types
-  felt like it would defeat the purose of the module, so we've dropped it
+  felt like it would defeat the purpose of the module, so we've dropped it
   instead.
-- Updated libray and example code to compile against network 3.0.x.
+- Dropped the dependency on `network` altogether. We need `network-uri`,
+  really. Giving up support for ancient versions of `network` allows us to drop
+  the `network-uri` flag, too, simplifying our builds.
+- Dropped support for versions of `mtl` prior to 2.2.x. That version was
+  released almost 5 years ago, so we can probably drop the compatibility code
+  (and the `old-mtl` Cabal flag) without surprising anyone.
 - Added new `cookieHttpOnly` flag to the `Cookies` type. When set, the client's
   browser will prevent client side scripts from accessing the cookie.
 

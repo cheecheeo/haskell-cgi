@@ -25,14 +25,6 @@ flag install-examples
   default:     False
   description: compile (and install) the example programs
 
-flag network-uri
-  default:     True
-  description: get Network.URI from the network-uri package
-
-flag old-mtl
-  default:     False
-  description: use mtl-compat and mtl \< 2.2.0.1
-
 library
   exposed-modules:  Network.CGI
                     Network.CGI.Cookie
@@ -45,21 +37,12 @@ library
                   , containers < 0.7
                   , exceptions == 0.10.*
                   , multipart  >= 0.1.2 && < 0.2
+                  , mtl        > 2.2.0.1 && < 2.3
+                  , network-uri == 2.6.*
                   , parsec     >= 2.0 && < 3.2
                   , time       >= 1.5 && < 1.10
                   , xhtml      >= 3000.0.0 && < 3000.3
   other-extensions: MultiParamTypeClasses
-  ghc-options:      -Wall
-
-  if flag(network-uri)
-    build-depends: network >= 2.6 && < 3.1, network-uri == 2.6.*
-  else
-    build-depends: network < 2.6
-
-  if flag(old-mtl)
-    build-depends: mtl >= 2.1.3.1 && <= 2.2.0.1, mtl-compat >= 0.2.1.1 && < 0.3
-  else
-    build-depends: mtl > 2.2.0.1 && < 2.3
 
 executable cookie.cgi
   main-is:        cookie.hs
