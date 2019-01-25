@@ -3,13 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
 ## [3001.4.0.0]
-### Changed
 - Drop obsolete Network.CGI.Compat module. The code in that module relied on
   obsolete functions and types from `network` which have been dropped there in
   the latest 3.x release. Re-writing the Compat module to use the new types
   felt like it would defeat the purose of the module, so we've dropped it
   instead.
 - Updated libray and example code to compile against network 3.0.x.
+- Added new `cookieHttpOnly` flag to the `Cookies` type. When set, the client's
+  browser will prevent client side scripts from accessing the cookie.
 
 ## [3001.3.1.0]
 ### Changed
