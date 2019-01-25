@@ -17,8 +17,6 @@ Its features include:
 - An efficient implementation of multipart/form-data
   using Data.ByteString. This allows for efficient
   handling of file uploads.
-- Wrapper functions for compatibility with the old
-  Network.CGI module.
 - A CGI monad transformer.
 - Basic exception handling and logging (these should be improved)
 - Low-level run functions that allow using programs written with
