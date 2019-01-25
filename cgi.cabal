@@ -1,5 +1,5 @@
 name:               cgi
-version:            3001.3.0.3
+version:            3001.4.0.0
 synopsis:           A library for writing CGI programs
 description:        This is a Haskell library for writing CGI programs.
 license:            BSD3
@@ -35,7 +35,6 @@ flag old-mtl
 
 library
   exposed-modules:  Network.CGI
-                    Network.CGI.Compat
                     Network.CGI.Cookie
                     Network.CGI.Monad
                     Network.CGI.Protocol
@@ -53,7 +52,7 @@ library
   ghc-options:      -Wall
 
   if flag(network-uri)
-    build-depends: network >= 2.6 && < 2.9, network-uri == 2.6.*
+    build-depends: network >= 2.6 && < 3.1, network-uri == 2.6.*
   else
     build-depends: network < 2.6
 

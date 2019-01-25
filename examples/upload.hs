@@ -7,7 +7,7 @@ import Data.Maybe (fromJust)
 import qualified Data.ByteString.Lazy as BS (writeFile)
 import Network.CGI
 import Text.XHtml
-   ( paragraph, (!), href, (+++), form, method, enctype, afile, submit
+   ( Html, paragraph, (!), href, (+++), form, method, enctype, afile, submit
    , renderHtml, header, thetitle, body, (<<), anchor
    )
 

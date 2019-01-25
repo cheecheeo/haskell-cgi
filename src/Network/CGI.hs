@@ -89,8 +89,6 @@ module Network.CGI (
   , setCookie, deleteCookie
   -- * URL encoding
   , formEncode, urlEncode, formDecode, urlDecode
-  -- * Compatibility with the old API
-  , module Network.CGI.Compat
   ) where
 
 import Control.Exception (Exception(..), SomeException, ErrorCall(..))
@@ -114,11 +112,9 @@ import qualified Network.CGI.Cookie as Cookie (deleteCookie)
 import Network.CGI.Accept
 import Network.CGI.Monad
 import Network.CGI.Protocol
-import Network.CGI.Compat
 
-import Text.XHtml (renderHtml, header, (<<), thetitle, (+++),
+import Text.XHtml (Html, renderHtml, header, (<<), thetitle, (+++),
                    body, h1, paragraph, hr, address)
-
 
 -- | Run a CGI action. Typically called by the main function.
 --   Reads input from stdin and writes to stdout. Gets
