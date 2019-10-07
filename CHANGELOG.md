@@ -6,6 +6,7 @@ This project adheres to the [Package Versioning Policy](https://wiki.haskell.org
 - Define a proper `MonadFail` instance for `CGIT`. This is necessary to compile
   successfully with `ghc-8.8.x` Since that change affects our public API, a
   major version bump is necessary.
+- The build no longer supports ghc prior to version 8.x.
 
 ## [3001.4.0.0]
 - Drop obsolete Network.CGI.Compat module. The code in that module relied on
