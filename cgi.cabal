@@ -1,5 +1,5 @@
 name:               cgi
-version:            3001.4.0.0
+version:            3001.5.0.0
 synopsis:           A library for writing CGI programs
 description:        This is a Haskell library for writing CGI programs.
 license:            BSD3
@@ -32,16 +32,16 @@ library
                     Network.CGI.Protocol
   other-modules:    Network.CGI.Accept
   hs-source-dirs:   src
-  build-depends:    base       >= 4.7 && < 5
-                  , bytestring < 0.11
-                  , containers < 0.7
-                  , exceptions == 0.10.*
-                  , multipart  >= 0.1.2 && < 0.3
-                  , mtl        > 2.2.0.1 && < 2.3
+  build-depends:    base        >= 4.9 && < 5
+                  , bytestring  < 0.11
+                  , containers  < 0.7
+                  , exceptions  == 0.10.*
+                  , mtl         > 2.2.0.1 && < 2.3
+                  , multipart   >= 0.1.2 && < 0.3
                   , network-uri == 2.6.*
-                  , parsec     >= 2.0 && < 3.2
-                  , time       >= 1.5 && < 1.10
-                  , xhtml      >= 3000.0.0 && < 3000.3
+                  , parsec      >= 2.0 && < 3.2
+                  , time        >= 1.5 && < 1.10
+                  , xhtml       >= 3000.0.0 && < 3000.3
   other-extensions: MultiParamTypeClasses
 
 executable cookie.cgi

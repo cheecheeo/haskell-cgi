@@ -27,12 +27,15 @@ module Network.CGI.Monad (
   throwCGI, catchCGI, tryCGI, handleExceptionCGI,
  ) where
 
+import Prelude hiding ( fail )
+
 import Control.Exception as Exception (SomeException)
 import Control.Applicative (Applicative(..))
 import Control.Monad.Catch (MonadCatch, MonadThrow, MonadMask, throwM, catch, try, mask, uninterruptibleMask, generalBracket)
 import Control.Monad.Except (MonadError(..))
 import Control.Monad.Reader (ReaderT(..), asks)
 import Control.Monad.Writer (WriterT(..), tell)
+import Control.Monad.Fail (MonadFail(..))
 import Control.Monad.Trans (MonadTrans, MonadIO, liftIO, lift)
 import Data.Typeable
 import Network.CGI.Protocol
@@ -59,7 +62,8 @@ instance (Applicative m) => Applicative (CGIT m) where
 instance Monad m => Monad (CGIT m) where
     c >>= f = CGIT (unCGIT c >>= unCGIT . f)
     return = CGIT . return
-    -- FIXME: should we have an error monad instead?
+
+instance MonadFail m => MonadFail (CGIT m) where
     fail = CGIT . fail
 
 instance MonadIO m => MonadIO (CGIT m) where

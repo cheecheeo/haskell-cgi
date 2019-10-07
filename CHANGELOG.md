@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
+## [3001.5.0.0]
+- Define a proper `MonadFail` instance for `CGIT`. This is necessary to compile
+  successfully with `ghc-8.8.x` Since that change affects our public API, a
+  major version bump is necessary.
+
 ## [3001.4.0.0]
 - Drop obsolete Network.CGI.Compat module. The code in that module relied on
   obsolete functions and types from `network` which have been dropped there in
