@@ -530,7 +530,8 @@ getMultiInputFPS n = do is <- cgiGet cgiInputs
 
 -- | Get the file name of an input.
 -- >>> import Data.ByteString.Lazy.UTF8 as BLU
--- >>> let boundary = "---------------------------9051914041544843365972754266" in
+-- >>> :{
+--   let boundary = "---------------------------9051914041544843365972754266" in
 --     parseMultipartBody boundary $ BLU.fromString "-----------------------------9051914041544843365972754266\n\
 --     \Content-Disposition: form-data; name=\"text\"\n\
 --     \\n\
@@ -541,6 +542,7 @@ getMultiInputFPS n = do is <- cgiGet cgiInputs
 --     \\n\
 --     \Content of a.txt.\n\
 --     \-----------------------------9051914041544843365972754266--"
+-- :}
 -- MultiPart [BodyPart [(HeaderName "Content-Disposition","form-data; name=\"text\"")] "text default",BodyPart [(HeaderName "Content-Disposition","form-data; name=\"file1\"; filename=\"a.txt\""),(HeaderName "Content-Type","text/plain")] "Content of a.txt."]
 getInputFilename :: MonadCGI m =>
                     String           -- ^ The name of the variable.
