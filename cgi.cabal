@@ -41,6 +41,7 @@ library
                   , network-uri == 2.6.*
                   , parsec      >= 2.0 && < 3.2
                   , time        >= 1.5 && < 1.10
+                  , utf8-string >= 1
                   , xhtml       >= 3000.0.0 && < 3000.3
   other-extensions: MultiParamTypeClasses
 
