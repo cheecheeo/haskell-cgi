@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
+## [3001.5.0.1]
+- Allow building against bytestring version 0.11.x.
+- Update our Cabal file to "cabal-version: >= 1.10" so that we can legally use
+  the other-extensions field.
+
 ## [3001.5.0.0]
 - Define a proper `MonadFail` instance for `CGIT`. This is necessary to compile
   successfully with `ghc-8.8.x` Since that change affects our public API, a
