@@ -20,7 +20,7 @@ cabal-version:      >= 1.10
 
 source-repository head
   type:     git
-  location: git://github.com/cheecheeo/haskell-cgi.git
+  location: https://github.com/cheecheeo/haskell-cgi.git
 
 flag install-examples
   default:     False
