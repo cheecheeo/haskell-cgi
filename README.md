@@ -4,7 +4,7 @@ cgi
 [![hackage release](https://img.shields.io/hackage/v/cgi.svg?label=hackage)](http://hackage.haskell.org/package/cgi)
 [![stackage LTS package](http://stackage.org/package/cgi/badge/lts)](http://stackage.org/lts/package/cgi)
 [![stackage Nightly package](http://stackage.org/package/cgi/badge/nightly)](http://stackage.org/nightly/package/cgi)
-[![travis build status](https://img.shields.io/travis/cheecheeo/haskell-cgi/master.svg?label=travis+build)](https://travis-ci.org/cheecheeo/haskell-cgi)
+[![CI Status](https://github.com/cheecheeo/haskell-cgi/actions/workflows/haskell-ci.yml/badge.svg)](https://github.com/cheecheeo/haskell-cgi/actions/workflows/haskell-ci.yml)
 
 This is a Haskell library for writing CGI programs.
 Its features include:
