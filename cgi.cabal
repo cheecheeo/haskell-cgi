@@ -16,7 +16,7 @@ bug-reports:        https://github.com/cheecheeo/haskell-cgi/issues
 build-type:         Simple
 extra-source-files: README.md
                     CHANGELOG.md
-cabal-version:      >= 1.8
+cabal-version:      >= 1.10
 
 source-repository head
   type:     git
@@ -44,10 +44,12 @@ library
                   , time        >= 1.5 && < 1.10
                   , xhtml       >= 3000.0.0 && < 3000.3
   other-extensions: MultiParamTypeClasses
+  default-language: Haskell2010
 
 executable cookie.cgi
   main-is:        cookie.hs
   hs-source-dirs: examples
+  default-language: Haskell2010
 
   if flag(install-examples)
     build-depends: base, cgi, xhtml
@@ -57,6 +59,7 @@ executable cookie.cgi
 executable error.cgi
   main-is:        error.hs
   hs-source-dirs: examples
+  default-language: Haskell2010
 
   if flag(install-examples)
     build-depends: base, cgi
@@ -66,6 +69,7 @@ executable error.cgi
 executable hello.cgi
   main-is:        hello.hs
   hs-source-dirs: examples
+  default-language: Haskell2010
 
   if flag(install-examples)
     build-depends: base, cgi
@@ -75,6 +79,7 @@ executable hello.cgi
 executable printinput.cgi
   main-is:        printinput.hs
   hs-source-dirs: examples
+  default-language: Haskell2010
 
   if flag(install-examples)
     build-depends: base, cgi
@@ -84,6 +89,7 @@ executable printinput.cgi
 executable redirect.cgi
   main-is:        redirect.hs
   hs-source-dirs: examples
+  default-language: Haskell2010
 
   if flag(install-examples)
     build-depends: base, cgi
@@ -93,6 +99,7 @@ executable redirect.cgi
 executable showAllInputs.cgi
   main-is:        showAllInputs.hs
   hs-source-dirs: examples
+  default-language: Haskell2010
 
   if flag(install-examples)
     build-depends: base, cgi
@@ -102,6 +109,7 @@ executable showAllInputs.cgi
 executable upload.cgi
   main-is:        upload.hs
   hs-source-dirs: examples
+  default-language: Haskell2010
 
   if flag(install-examples)
     build-depends: base, bytestring, cgi, xhtml
