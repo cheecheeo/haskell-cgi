@@ -37,7 +37,7 @@ library
                   , bytestring  < 0.12
                   , containers  < 0.7
                   , exceptions  == 0.10.*
-                  , mtl         > 2.2.0.1 && < 2.3
+                  , mtl         > 2.2.0.1 && < 2.4
                   , multipart   >= 0.1.2 && < 0.3
                   , network-uri == 2.6.*
                   , parsec      >= 2.0 && < 3.2
