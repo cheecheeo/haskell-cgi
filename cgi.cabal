@@ -34,7 +34,7 @@ library
   other-modules:    Network.CGI.Accept
   hs-source-dirs:   src
   build-depends:    base        >= 4.9 && < 5
-                  , bytestring  < 0.12
+                  , bytestring  < 0.13
                   , containers  < 0.7
                   , exceptions  == 0.10.*
                   , mtl         > 2.2.0.1 && < 2.4
