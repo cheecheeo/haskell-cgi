@@ -266,12 +266,12 @@ jobs:
       - name: examples
         run: |
           cd ${PKGDIR_cgi} || false
-          $CABAL run cookie.cgi
-          $CABAL run hello.cgi
-          $CABAL run printinput.cgi
-          $CABAL run redirect.cgi
-          $CABAL run showAllInputs.cgi
-          $CABAL run upload.cgi
+          $CABAL v2-run $ARG_COMPILER cookie.cgi
+          $CABAL v2-run $ARG_COMPILER hello.cgi
+          $CABAL v2-run $ARG_COMPILER printinput.cgi
+          $CABAL v2-run $ARG_COMPILER redirect.cgi
+          $CABAL v2-run $ARG_COMPILER showAllInputs.cgi
+          $CABAL v2-run $ARG_COMPILER upload.cgi
       - name: hlint
         run: |
           if [ $((HCNUMVER >= 90400 && HCNUMVER < 90600)) -ne 0 ] ; then (cd ${PKGDIR_cgi} && hlint -XHaskell2010 src) ; fi
