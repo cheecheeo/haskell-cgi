@@ -251,14 +251,14 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ matrix.compiler }}-
       - name: install dependencies
         run: |
-          $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks --dependencies-only -j2 all
-          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dependencies-only -j2 all
+          $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks --dependencies-only -j2 --allow-newer=multipart-0.2.1:bytestring all
+          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dependencies-only -j2 --allow-newer=multipart-0.2.1:bytestring all
       - name: build w/o tests
         run: |
-          $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks all
+          $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks --allow-newer=multipart-0.2.1:bytestring all
       - name: build
         run: |
-          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH all --write-ghc-environment-files=always
+          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --allow-newer=multipart-0.2.1:bytestring all --write-ghc-environment-files=always
       - name: doctest
         run: |
           cd ${PKGDIR_cgi} || false
@@ -266,11 +266,11 @@ jobs:
       - name: examples
         run: |
           cd ${PKGDIR_cgi} || false
-          $CABAL v2-run $ARG_COMPILER cookie.cgi
-          $CABAL v2-run $ARG_COMPILER hello.cgi
-          $CABAL v2-run $ARG_COMPILER printinput.cgi
-          $CABAL v2-run $ARG_COMPILER redirect.cgi
-          $CABAL v2-run $ARG_COMPILER showAllInputs.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring cookie.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring hello.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring printinput.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring redirect.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring showAllInputs.cgi
           $CABAL v2-run $ARG_COMPILER upload.cgi
       - name: hlint
         run: |
