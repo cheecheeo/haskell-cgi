@@ -241,7 +241,7 @@ jobs:
           cat cabal.project.local
       - name: dump install plan
         run: |
-          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dry-run all
+          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dry-run --allow-newer=multipart-0.2.1:bytestring all
           cabal-plan
       - name: restore cache
         uses: actions/cache/restore@v3
