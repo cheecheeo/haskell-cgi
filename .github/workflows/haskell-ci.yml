@@ -241,7 +241,7 @@ jobs:
           cat cabal.project.local
       - name: dump install plan
         run: |
-          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dry-run --allow-newer=multipart-0.2.1:bytestring -f install-examples all
+          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dry-run --allow-newer=multipart-0.2.1:bytestring --flags install-examples all
           cabal-plan
       - name: restore cache
         uses: actions/cache/restore@v3
@@ -251,14 +251,14 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ matrix.compiler }}-
       - name: install dependencies
         run: |
-          $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks --dependencies-only -j2 --allow-newer=multipart-0.2.1:bytestring all
-          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dependencies-only -j2 --allow-newer=multipart-0.2.1:bytestring all
+          $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks --dependencies-only -j2 --allow-newer=multipart-0.2.1:bytestring --flags install-examples all
+          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dependencies-only -j2 --allow-newer=multipart-0.2.1:bytestring --flags install-examples all
       - name: build w/o tests
         run: |
           $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks --allow-newer=multipart-0.2.1:bytestring all
       - name: build
         run: |
-          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --allow-newer=multipart-0.2.1:bytestring all --write-ghc-environment-files=always
+          $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --allow-newer=multipart-0.2.1:bytestring --flags install-examples all --write-ghc-environment-files=always
       - name: doctest
         run: |
           cd ${PKGDIR_cgi} || false
@@ -266,12 +266,12 @@ jobs:
       - name: examples
         run: |
           cd ${PKGDIR_cgi} || false
-          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring cookie.cgi
-          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring hello.cgi
-          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring printinput.cgi
-          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring redirect.cgi
-          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring showAllInputs.cgi
-          $CABAL v2-run $ARG_COMPILER upload.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring --flags install-examples cookie.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring --flags install-examples hello.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring --flags install-examples printinput.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring --flags install-examples redirect.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring --flags install-examples showAllInputs.cgi
+          $CABAL v2-run $ARG_COMPILER --allow-newer=multipart-0.2.1:bytestring --flags install-examples upload.cgi
       - name: hlint
         run: |
           if [ $((HCNUMVER >= 90400 && HCNUMVER < 90600)) -ne 0 ] ; then (cd ${PKGDIR_cgi} && hlint -XHaskell2010 src) ; fi
