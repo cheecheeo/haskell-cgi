@@ -42,8 +42,9 @@ library
                   , multipart   >= 0.1.2 && < 0.3
                   , network-uri == 2.6.*
                   , parsec      >= 2.0 && < 3.2
+                  , text        < 2.2
                   , time        >= 1.5 && < 1.13
-                  , xhtml       >= 3000.0.0 && < 3000.3
+                  , xhtml       >= 3000.0.0 && < 3000.5
   other-extensions: MultiParamTypeClasses
   default-language: Haskell2010
 
