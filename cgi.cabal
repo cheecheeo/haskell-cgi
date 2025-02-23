@@ -1,5 +1,5 @@
 name:               cgi
-version:            3001.5.0.1
+version:            3001.5.1.0
 synopsis:           A library for writing CGI programs
 description:        This is a Haskell library for writing CGI programs.
 license:            BSD3
