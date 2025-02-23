@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
+## [3001.5.1.0]
+- Add support for GHC 9.12.x.
+- Add support for xhtml 3000.5.x.
+- Add support for containers 0.7.x.
+- Add support for bytestring 0.12.x.
+- Add support for mtl 2.3.x.
+
 ## [3001.5.0.1]
 - Allow building against bytestring version 0.11.x.
 - Update our Cabal file to "cabal-version: >= 1.10" so that we can legally use
