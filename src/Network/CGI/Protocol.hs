@@ -45,7 +45,6 @@ import System.IO (Handle, hPutStrLn, stderr, hFlush, hSetBinaryMode)
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.ByteString.Lazy.Char8 (ByteString)
 
-import Data.Typeable
 import Network.Multipart
 
 
@@ -86,7 +85,7 @@ data Input = Input {
 -- | The result of a CGI program.
 data CGIResult = CGIOutput ByteString
                | CGINothing
-                 deriving (Show, Read, Eq, Ord, Typeable)
+                 deriving (Show, Read, Eq, Ord)
 
 --
 -- * Running CGI actions
@@ -317,4 +316,3 @@ maybeRead = fmap fst . listToMaybe . reads
 --   returns the empty string if lookup fails.
 lookupOrNil :: String -> [(String,String)] -> String
 lookupOrNil n = fromMaybe "" . lookup n
-
