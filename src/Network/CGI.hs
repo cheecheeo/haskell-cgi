@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Network.CGI
@@ -116,6 +117,17 @@ import Network.CGI.Protocol
 import Text.XHtml (Html, renderHtml, header, (<<), thetitle, (+++),
                    body, h1, paragraph, hr, address)
 
+#if MIN_VERSION_xhtml(3000,3,0)
+import Data.ByteString.Builder (toLazyByteString)
+import qualified Data.Text.Lazy as LText
+import qualified Data.Text.Lazy.Encoding as LText
+import Text.XHtml (Builder)
+
+-- Taken from Text.XHtml.Internal
+builderToString :: Builder -> String
+builderToString = LText.unpack . LText.decodeUtf8 . toLazyByteString
+#endif
+
 -- | Run a CGI action. Typically called by the main function.
 --   Reads input from stdin and writes to stdout. Gets
 --   CGI environment variables from the program environment.
@@ -206,7 +218,11 @@ outputError c m es =
                    output text
            _ -> do setHeader "Content-type" (showContentType htmlType)
                    page <- errorPage c m es
+#if MIN_VERSION_xhtml(3000,3,0)
+                   output $ builderToString $ renderHtml page
+#else
                    output $ renderHtml page
+#endif
 
 -- | Create an HTML error page.
 errorPage :: MonadCGI m =>

@@ -1,5 +1,5 @@
 name:               cgi
-version:            3001.5.0.1
+version:            3001.5.1.0
 synopsis:           A library for writing CGI programs
 description:        This is a Haskell library for writing CGI programs.
 license:            BSD3
@@ -9,8 +9,8 @@ copyright:          Bjorn Bringert, John Chee, Andy Gill, Anders Kaseorg,
 author:             Bjorn Bringert
 maintainer:         John Chee <cheecheeo@gmail.com>, Peter Simons <simons@cryp.to>
 tested-with:        GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.5, GHC == 8.8.4,
-                    GHC == 8.10.7, GHC == 9.0.2, GHC == 9.2.8, GHC == 9.4.8, GHC == 9.6.3,
-                    GHC == 9.8.2, GHC == 9.10.1
+                    GHC == 8.10.7, GHC == 9.0.2, GHC == 9.2.8, GHC == 9.4.8, GHC == 9.6.6,
+                    GHC == 9.8.4, GHC == 9.10.1, GHC == 9.12.1
 category:           Network
 homepage:           https://github.com/cheecheeo/haskell-cgi
 bug-reports:        https://github.com/cheecheeo/haskell-cgi/issues
@@ -42,8 +42,9 @@ library
                   , multipart   >= 0.1.2 && < 0.3
                   , network-uri == 2.6.*
                   , parsec      >= 2.0 && < 3.2
+                  , text        < 2.2
                   , time        >= 1.5 && < 1.15
-                  , xhtml       >= 3000.0.0 && < 3000.3
+                  , xhtml       >= 3000.0.0 && < 3000.5
   other-extensions: MultiParamTypeClasses
   default-language: Haskell2010
 
