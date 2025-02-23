@@ -37,7 +37,6 @@ import Control.Monad.Reader (ReaderT(..), asks)
 import Control.Monad.Writer (WriterT(..), tell)
 import Control.Monad.Fail (MonadFail(..))
 import Control.Monad.Trans (MonadTrans, MonadIO, liftIO, lift)
-import Data.Typeable
 import Network.CGI.Protocol
 
 
@@ -50,7 +49,6 @@ type CGI a = CGIT IO a
 
 -- | The CGIT monad transformer.
 newtype CGIT m a = CGIT { unCGIT :: ReaderT CGIRequest (WriterT Headers m) a }
-                        deriving (Typeable)
 
 instance (Functor m) => Functor (CGIT m) where
     fmap f c = CGIT (fmap f (unCGIT c))
