@@ -59,7 +59,6 @@ instance (Applicative m) => Applicative (CGIT m) where
 
 instance Monad m => Monad (CGIT m) where
     c >>= f = CGIT (unCGIT c >>= unCGIT . f)
-    return = CGIT . return
 
 instance MonadFail m => MonadFail (CGIT m) where
     fail = CGIT . fail
