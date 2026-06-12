@@ -1,6 +1,7 @@
 packages: .
 
 package cgi
-  flags:                +install-examples
-  ghc-options:          -Wall -Wcompat -Wincomplete-uni-patterns -Wincomplete-record-updates
-                        -Wredundant-constraints
+  flags:        +install-examples
+  ghc-options:  -Wall -Wcompat -Wincomplete-uni-patterns -Wincomplete-record-updates
+                -Wredundant-constraints -Wunused-packages
+  ghc-options:  -fwrite-ide-info
