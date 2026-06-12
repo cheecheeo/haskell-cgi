@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to the [Package Versioning Policy](https://wiki.haskell.org/Package_versioning_policy).
 
+## [3001.5.2.0]
+- Add support for containers 0.8.x.
+- Add support for time 0.15 and 0.16.
+- Depend on 'text' only when using xhtml >= 3000.3.
+- Remove noncanonical definitions to appease the -Wnoncanonical-monad-instances
+  warning. This warning exists because a future GHC release may treat
+  noncanonical definitions as errors. See also:
+  https://gitlab.haskell.org/ghc/ghc/-/wikis/proposal/monad-of-no-return
+
 ## [3001.5.1.0]
 - Add support for GHC 9.12.x.
 - Add support for xhtml 3000.5.x.
