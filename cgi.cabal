@@ -23,6 +23,10 @@ source-repository head
   type:     git
   location: https://github.com/cheecheeo/haskell-cgi.git
 
+flag xhtml-library-needs-text
+  description: xhtml 3000.3.x introduced a dependency on text
+  manual: False
+
 flag install-examples
   default:     False
   description: compile (and install) the example programs
@@ -42,9 +46,11 @@ library
                   , multipart   >= 0.1.2 && < 0.3
                   , network-uri == 2.6.*
                   , parsec      >= 2.0 && < 3.2
-                  , text        < 2.2
                   , time        >= 1.5 && < 1.17
-                  , xhtml       >= 3000.0.0 && < 3000.5
+  if flag(xhtml-library-needs-text)
+    build-depends:  xhtml       >= 3000.3 && < 3000.5, text
+  else
+    build-depends:  xhtml       >= 3000 && < 3000.3
   other-extensions: MultiParamTypeClasses
   default-language: Haskell2010
 
@@ -53,7 +59,7 @@ executable cookie.cgi
   hs-source-dirs: examples
   default-language: Haskell2010
 
-  if flag(install-examples)
+  if flag(install-examples) && !flag(xhtml-library-needs-text)
     build-depends: base, cgi, xhtml
   else
     buildable: False
@@ -113,7 +119,7 @@ executable upload.cgi
   hs-source-dirs: examples
   default-language: Haskell2010
 
-  if flag(install-examples)
-    build-depends: base, bytestring, cgi, xhtml
+  if flag(install-examples) && !flag(xhtml-library-needs-text)
+    build-depends: base, bytestring, cgi
   else
     buildable: False
